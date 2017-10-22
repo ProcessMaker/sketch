@@ -1,0 +1,41 @@
+
+// Fonts needed for Material UI
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+// Variables
+@import "variables";
+
+// Material
+@import "~vue-material/dist/vue-material.css";
+
+// Include JointJS CSS
+@import "~jointjs/dist/joint.css";
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+svg:not(.md-image) {
+  height: 100%;
+}
+
+#inspector .md-sidenav-content {
+  width: 480px;
+}
+
+#inspector-body {
+  padding: 16px;
+}
