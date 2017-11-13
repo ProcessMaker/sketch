@@ -48,25 +48,26 @@
                 this.paper.drawGrid();
             },
             makeElement(id, data) {
+                let label = data.label ? data.label : data.title;
                 let classname = 'joint.shapes.pmio.' + data.type;
                 var constructorFunc = classname.split('.')
                     .reduce((prev, next) => prev[next], window);
 
                 // Calc the label rect size
-                var maxLineLength = _.max(data.label.split('\n'), function(l)  { return l.length; }).length;
+                var maxLineLength = _.max(label.split('\n'), function(l)  { return l.length; }).length;
 
                 // Compute width/height of the rectangle based on the number
                 // of lines in the label and the letter size. 0.6 * letterSize is
                 // an approximation of the monospace font letter width.
                 var letterSize = 6;
                 var width = 2 * (letterSize * (0.6 * maxLineLength + 1));
-                var height = 1.5 * ((data.label.split('\n').length + 1) * letterSize);
+                var height = 1.5 * ((label.split('\n').length + 1) * letterSize);
 
                 return new constructorFunc({
                     id: id,
                     attrs: {
                         text: {
-                            text: data.label
+                            text: label
                         },
                         'image.icon': {
                             'xlink:href': data.icon

@@ -1,4 +1,4 @@
-joint.shapes.pmio.tasks.ScriptTask = joint.shapes.basic.Generic.extend({
+joint.shapes.pmio.tasks.Script = joint.shapes.basic.Generic.extend({
     markup: '<g class="rotatable"><image class="icon" /><rect class="label" /> <text /></g>',
 
     defaults: joint.util.deepSupplement({

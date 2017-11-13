@@ -8,12 +8,15 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.VueCodeMirror = require('vue-codemirror')
+
 window.graphlib = require('graphlib');
 window.dagre = require('dagre');
 window.joint = require('jointjs');
 // Bring in our Vue Material package
 window.VueMaterial = require('vue-material');
 window.Vue.use(window.VueMaterial);
+window.Vue.use(window.VueCodeMirror);
 
 Vue.material.registerTheme('default', {
     primary: 'blue',
@@ -30,6 +33,7 @@ require('./shapes/init.js');
 
 // Bring in our components
 Vue.component('diagram-view', require('./components/diagram-view.vue'));
+Vue.component('element-browser', require('./components/element-browser.vue'));
 
 /**
  * Initialize our Sketch app
@@ -41,12 +45,15 @@ const sketch = new Vue({
         graphHeight: 0,
         graphWidth: 0,
         statusText: '',
+        // Represents the active element that has been clicked
+        activeElement: null,
         inspectorTitle: '',
         inspectorFormConfig: null,
         inspectorTitleEditing: false,
         inspectorTempTitle: 'test',
         model: {
             '213aa8fb-15ec-44e7-9727-fd7273d9b109': {
+                title: 'Start Event',
                 label: 'Start from Webhook',
                 type: 'events.Start',
                 connections: [
@@ -54,93 +61,72 @@ const sketch = new Vue({
                 ]
             },
             'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
-                label: 'Send Thank You Email',
-                type: 'tasks.Service',
-                icon: '/icons/mail.png',
-                connections: [
-                    'a6d0ca7c-abf5-436b-9b5a-4bb282bf4f20'
-                ]
-            },
-            // exclusive gateway
-            'a6d0ca7c-abf5-436b-9b5a-4bb282bf4f20': {
-                label: 'Determine if Priority Request',
-                type: 'gateways.Exclusive',
-                connections: [
-                    '1de7ba14-87fb-4c04-9c2e-1decc1bd22e4',
-                    '0472922c-a39e-4ddc-aeaf-ef1b8e5c38dc'
-                ]
-            },
-            // Script Task 1
-            '1de7ba14-87fb-4c04-9c2e-1decc1bd22e4': {
-                label: 'Update Active Directory',
-                type: 'tasks.ScriptTask',
-                connections: [
-                    'bc70d19f-c015-4a02-ad15-9203a8bead8d'
-                ]
-            },
-            '0472922c-a39e-4ddc-aeaf-ef1b8e5c38dc': {
-                label: 'Send Mail To HR',
-                icon: '/icons/mail.png',
-                type: 'tasks.Service',
-                connections: [
-                    'bc70d19f-c015-4a02-ad15-9203a8bead8d'
-                ],
-                data: {},
-                formConfig: [
-                    {
-                        type: 'help',
-                        text: 'The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces.'
-                    },
-                    {
-                        type: 'text',
-                        name: 'to',
-                        label: 'Recipient Email Address',
-                    },
-                    {
-                        type: 'text',
-                        name: 'name',
-                        label: 'Sender Name',
-                        placeholder: 'Name the email will appear from'
-                    },
-                    {
-                        type: 'text',
-                        name: 'subject',
-                        label: 'Email Subject Line'
-                    },
-                    {
-                        type: 'textarea',
-                        name: 'template',
-                        label: 'Message Template'
-                    }
-                ]
-            },
-            'bc70d19f-c015-4a02-ad15-9203a8bead8d': {
-                label: 'Merge Paths',
-                type: 'gateways.Inclusive',
-                connections: [
-                    '22b025a2-41b3-4f01-93c4-5e99b797001a'
-                ]
-            },
-            '22b025a2-41b3-4f01-93c4-5e99b797001a': {
-                label: 'Finished',
-                type: 'events.End',
+                title: 'Add Element',
+                label: 'Add',
+                type: 'util.Add',
                 connections: []
             }
         }
     },
     methods: {
+        guid() {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        )
+        },
+        browserSelect: function(data) {
+            // what we do now is replace the activeElement with a new element
+            let guid = this.guid();
+            let el = {
+                title: data.title,
+                label: data.title,
+                type: data.type,
+                icon: data.icon,
+                connections: [],
+                formConfig: data.formConfig
+            }
+            this.$set(this.model, guid, el);
+            // Now make all items that previously connected to the activeElement now connect to this element
+            for(itemId in this.model) {
+                let item = this.model[itemId];
+                let idx = item.connections.indexOf(this.activeElement);
+                if(idx > -1) {
+                    item.connections.splice(idx, 1);
+                    item.connections.push(guid);
+                }
+            };
+            // Remove activeElement
+            this.$delete(this.model, this.activeElement);
+            // Now determine if the new element is a termination, if not, add an Add
+            if(!data.termination) {
+                let addGuid = this.guid();
+                let add = {
+                    label: 'Add',
+                    type: 'util.Add',
+                    connections: []
+                }
+                this.$set(this.model, addGuid, add);
+                el.connections.push(addGuid);
+            }
+            this.activeElement = null
+        },
         handleElementClick: function(id) {
-            this.statusText = "Clicked on " + id;
             element = this.model[id];
-            this.inspectorTitle = element.label;
-            this.$refs.snackbar.open();
-            this.inspectorFormConfig = element.formConfig;
-            this.showInspector();
+            this.activeElement = id;
+            if(element.type == 'util.Add') {
+                this.$refs['element-browser'].open();
+
+            } else {
+                this.inspectorTitle = element.label ? element.label : element.title;
+                this.inspectorFormConfig = element.formConfig;
+                this.showInspector();
+            }
         },
         showInspector() {
             this.$refs.inspector.toggle();
         },
         closeInspector() {
+            this.activeElement = null;
             this.$refs.inspector.close();
         }
     },

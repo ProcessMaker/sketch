@@ -10,6 +10,7 @@
 
 <body>
 <div id="sketch">
+    <element-browser ref="element-browser" @select="browserSelect"></element-browser>
     <md-snackbar v-cloak md-position="bottom center" ref="snackbar" md-duration="4000">
         <span v-text="statusText"></span>
         <md-button class="md-accent" @click="$refs.snackbar.close()">Close</md-button>
@@ -18,16 +19,22 @@
         <md-whiteframe md-elevation="2">
             <md-toolbar>
                 <div class="md-toolbar-container">
-                        <h3 class="md-title">
-                            @{{inspectorTitle}}
+                        <h3 class="md-title" v-if="activeElement">
+                            @{{model[activeElement].label ? model[activeElement].label : model[activeElement].title}}
+                        </h3>
+                        <h3 class="md-title" v-else>
+                            @{{ inspectorTitle }}
                         </h3>
                 </div>
 
             </md-toolbar>
 
         </md-whiteframe>
-        <div id="inspector-body">
-                <div v-for="item in inspectorFormConfig">
+        <div id="inspector-body" v-if="activeElement">
+            <md-input-container>
+                <md-input v-model="model[activeElement].label" v-bind:placeholder="model[activeElement].title"></md-input>
+            </md-input-container>
+                <div v-for="item in model[activeElement].formConfig">
                     <p v-if="item.type == 'help'" v-text="item.text"></p>
                     <md-input-container v-else-if="item.type == 'text'">
                         <label v-text="item.label"></label>
@@ -37,9 +44,13 @@
                          <label v-text="item.label"></label>
                         <md-textarea v-bind:placeholder="item.placeholder"></md-textarea>
                     </md-input-container>
+                    <div v-else-if="item.type == 'script'">
+                        <label v-text="item.label"></label>
+                        <codemirror :model="item.value" :options="item.options"></codemirror>
+                    </div>
                 </div>
 
-            <md-button class="md-raised md-accent" @click="closeInspector">Cancel</md-button>
+            <md-button class="md-raised md-accent" @click="closeInspector">Close</md-button>
         </div>
 
     </md-sidenav>

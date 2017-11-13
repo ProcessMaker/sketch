@@ -19,9 +19,10 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
-    "vue-material": "^0.7.5",
-    "jointjs": "^1.1.0",
+    "dagre": "^0.7.4",
     "graphlib": "^2.1.1",
-    "dagre": "^0.7.4"
+    "jointjs": "^1.1.0",
+    "vue-codemirror": "^3.1.8",
+    "vue-material": "^0.7.5"
   }
 }
