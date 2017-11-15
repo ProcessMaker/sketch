@@ -48,7 +48,7 @@
                 this.paper.drawGrid();
             },
             makeElement(id, data) {
-                let label = data.label ? data.label : data.title;
+                let label = data.name ? data.name : data.title;
                 let classname = 'joint.shapes.pmio.' + data.type;
                 var constructorFunc = classname.split('.')
                     .reduce((prev, next) => prev[next], window);

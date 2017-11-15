@@ -10,6 +10,7 @@
 
 <body>
 <div id="sketch">
+    <load-browser @select="loadSelect" ref="load-browser"></load-browser>
     <element-browser ref="element-browser" @select="browserSelect"></element-browser>
     <md-snackbar v-cloak md-position="bottom center" ref="snackbar" md-duration="4000">
         <span v-text="statusText"></span>
@@ -57,7 +58,8 @@
     <div id="toolbar-container">
         <md-whiteframe md-elevation="2">
             <md-toolbar v-cloak>
-                <h1>ProcessMaker Sketch</h1>
+                <h1 class="md-title" style="flex: 1">ProcessMaker Sketch</h1>
+                <md-button @click="load">Load Existing</md-button>
             </md-toolbar>
         </md-whiteframe>
     </div>

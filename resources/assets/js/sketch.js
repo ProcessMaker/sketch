@@ -34,6 +34,7 @@ require('./shapes/init.js');
 // Bring in our components
 Vue.component('diagram-view', require('./components/diagram-view.vue'));
 Vue.component('element-browser', require('./components/element-browser.vue'));
+Vue.component('load-browser', require('./components/load-browser.vue'));
 
 /**
  * Initialize our Sketch app
@@ -54,7 +55,7 @@ const sketch = new Vue({
         model: {
             '213aa8fb-15ec-44e7-9727-fd7273d9b109': {
                 title: 'Start Event',
-                label: 'Start from Webhook',
+                name: 'Start from Webhook',
                 type: 'events.Start',
                 connections: [
                     'e4e51853-a604-4725-a75c-a1ae611a1ca7'
@@ -62,7 +63,7 @@ const sketch = new Vue({
             },
             'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
                 title: 'Add Element',
-                label: 'Add',
+                name: 'Add',
                 type: 'util.Add',
                 connections: []
             }
@@ -74,12 +75,21 @@ const sketch = new Vue({
                 (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         )
         },
+        // Used when wanting to load an existing process
+        load: function() {
+            this.$refs['load-browser'].open();
+
+        },
+        loadSelect: function(data) {
+            this.model = data;
+
+        },
         browserSelect: function(data) {
             // what we do now is replace the activeElement with a new element
             let guid = this.guid();
             let el = {
                 title: data.title,
-                label: data.title,
+                name: data.title,
                 type: data.type,
                 icon: data.icon,
                 connections: [],

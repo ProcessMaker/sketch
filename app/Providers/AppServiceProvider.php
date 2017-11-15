@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use ProcessMaker\PMIO\ApiClient;
+use ProcessMaker\PMIO\Client;
+use ProcessMaker\PMIO\Configuration;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 
     /**
@@ -23,6 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Register our ProcessMaker.IO Client
+        $this->app->singleton(Client::class, function($app) {
+            $config = new Configuration();
+            $config->setHost(config('sketch.endpoint'));
+            $config->setAccessToken(config('sketch.access_token'));
+            return new Client(new ApiClient($config));
+        });
     }
 }

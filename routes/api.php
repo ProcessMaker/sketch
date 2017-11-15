@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use ProcessMaker\PMIO\Client;
+use ProcessMaker\PMIO\ObjectSerializer;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/processes', function (Client $client, Request $request) {
+    $processes = $client->listProcesses();
+    return response()->json(ObjectSerializer::sanitizeForSerialization($processes));
+});
+
+Route::get('/processes/{id}', function(Client $client, Request $request, $id) {
+    $data = [];
+    // First, gather all events
+    $events = $client->listEvents($id)->getData();
+    foreach($events as $event) {
+        $attributes = $event->getAttributes();
+        $title = ucfirst(strtolower($attributes->getType()));
+        $data[$event->getId()] = [
+            'title' => $title . ' Event',
+            'name' => $attributes->getName(),
+            'type' => 'events.'. $title,
+            'connections' => []
+        ];
+    }
+    return response()->json($data);
+
 });
