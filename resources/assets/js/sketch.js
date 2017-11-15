@@ -111,7 +111,8 @@ const sketch = new Vue({
             if(!data.termination) {
                 let addGuid = this.guid();
                 let add = {
-                    label: 'Add',
+                    title: 'Add Element',
+                    name: 'Add',
                     type: 'util.Add',
                     connections: []
                 }

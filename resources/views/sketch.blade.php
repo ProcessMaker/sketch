@@ -21,7 +21,7 @@
             <md-toolbar>
                 <div class="md-toolbar-container">
                         <h3 class="md-title" v-if="activeElement">
-                            @{{model[activeElement].label ? model[activeElement].label : model[activeElement].title}}
+                            @{{model[activeElement].title}}
                         </h3>
                         <h3 class="md-title" v-else>
                             @{{ inspectorTitle }}
@@ -33,7 +33,8 @@
         </md-whiteframe>
         <div id="inspector-body" v-if="activeElement">
             <md-input-container>
-                <md-input v-model="model[activeElement].label" v-bind:placeholder="model[activeElement].title"></md-input>
+                <label>Name</label>
+                <md-input v-model="model[activeElement].name" v-bind:placeholder="model[activeElement].title"></md-input>
             </md-input-container>
                 <div v-for="item in model[activeElement].formConfig">
                     <p v-if="item.type == 'help'" v-text="item.text"></p>
