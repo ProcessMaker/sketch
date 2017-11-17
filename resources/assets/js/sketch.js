@@ -14,7 +14,9 @@ window.graphlib = require('graphlib');
 window.dagre = require('dagre');
 window.joint = require('jointjs');
 // Bring in our Vue Material package
-window.VueMaterial = require('vue-material');
+import VueMaterial from 'vue-material'
+
+
 window.Vue.use(window.VueMaterial);
 window.Vue.use(window.VueCodeMirror);
 
@@ -48,6 +50,7 @@ const sketch = new Vue({
         statusText: '',
         // Represents the active element that has been clicked
         activeElement: null,
+        menuVisible: false,
         inspectorTitle: '',
         inspectorFormConfig: null,
         inspectorTitleEditing: false,
@@ -70,6 +73,9 @@ const sketch = new Vue({
         }
     },
     methods: {
+        toggleMenu() {
+            this.menuVisible = !this.menuVisible;
+        },
         guid() {
             return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
                 (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)

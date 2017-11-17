@@ -61,6 +61,7 @@
                             sendmail: {
                                 id: 'sendmail',
                                 title: 'Send E-Mail',
+                                connector_class: 'SendMailConnector',
                                 icon: '/icons/mail.png',
                                 description: 'Send an e-mail to a specified recipient and with content',
                                 type: 'tasks.Service',

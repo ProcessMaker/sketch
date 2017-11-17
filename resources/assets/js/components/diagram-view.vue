@@ -113,8 +113,7 @@
         watch: {
             model: {
                 handler: function(val) {
-                    console.log("Model has changed, let's change it.");
-                    // Okay, let's build our graph
+                    // Rebuild graph
                     this.buildGraph(val);
                 },
                 deep: true

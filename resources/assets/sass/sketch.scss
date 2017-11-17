@@ -7,7 +7,7 @@
 @import "variables";
 
 // Material
-@import "~vue-material/dist/vue-material.css";
+@import "~vue-material/vue-material.css";
 
 // Include JointJS CSS
 @import "~jointjs/dist/joint.css";
@@ -38,4 +38,9 @@ svg:not(.md-image) {
 
 #inspector-body {
   padding: 16px;
+}
+
+.md-drawer {
+  width: 230px;
+  max-width: calc(100vw - 125px);
 }
