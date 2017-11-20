@@ -1,29 +1,21 @@
 <template>
-    <md-dialog md-open-from="#custom" md-close-to="#custom" ref="elementsdialog">
+    <md-dialog :md-active.sync="showDialog" ref="elementsdialog">
         <md-dialog-title>Browse Elements</md-dialog-title>
 
-        <md-dialog-content>
-            <md-layout md-gutter>
-                <md-layout md-flex="33">
                     <md-list>
                         <md-list-item @click="selected = model[item.id]" v-for="item in model" :key="item.id">
                             <md-icon>{{item.icon}}</md-icon>
                             <span>{{item.title}}</span>
                         </md-list-item>
                     </md-list>
-                </md-layout>
-                <md-layout md-flex="false">
                     <md-list v-if="selected">
                         <div v-for="item in selected.items" :key="item.id">
-                            <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong></h4>
+                            <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong>: {{item.id}}</h4>
                             <p>
                             {{item.description}}
                             </p>
                         </div>
                     </md-list>
-                </md-layout>
-            </md-layout>
-        </md-dialog-content>
 
         <md-dialog-actions>
             <md-button class="md-primary" @click="close()">Cancel</md-button>
@@ -34,9 +26,13 @@
 
 <script>
     export default {
+        props: [
+            'show'
+        ],
 
         data: function() {
             return {
+                showDialog: false,
                 selected: null,
                 model: {
                     process: {
@@ -158,18 +154,23 @@
                 this.selected = this.model[catId];
             },
             open() {
-                this.$refs['elementsdialog'].open();
+                this.showDialog = false;
                 this.selected = this.model.util;
             },
             close() {
-                this.$refs['elementsdialog'].close();
+                this.$emit('closed');
+                this.showDialog = false;
             },
             select(catId, itemId) {
                 this.$emit('select', this.model[catId].items[itemId]);
                 this.close();
             }
+        },
+        watch: {
+            show: function(val) {
+                this.showDialog = val;
+            }
         }
-
     }
 </script>
 

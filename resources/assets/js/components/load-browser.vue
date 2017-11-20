@@ -1,5 +1,5 @@
 <template>
-    <md-dialog md-open-from="#custom" md-close-to="#custom" ref="loaddialog">
+    <md-dialog :md-active.sync="showDialog" md-open-from="#custom" md-close-to="#custom" ref="loaddialog">
         <md-dialog-title>Load Existing Process</md-dialog-title>
 
         <md-dialog-content>
@@ -22,30 +22,21 @@
 <script>
 
 export default {
+    props: [
+        'show'
+    ],
 
     data: function() {
         return {
             loading: true,
             api: null,
-            processes: []
+            processes: [],
+            showDialog: false
         }
     },
     mounted: function() {
     },
     methods: {
-        open() {
-            this.loading = true;
-            this.$refs['loaddialog'].open();
-            // Load processes
-            axios.get('/api/processes')
-                .then((response) => {
-                    this.processes = response.data.data;
-                    this.loading = false;
-                })
-                .catch((err) => {
-                    this.loading = false;
-                });
-        },
         loadProcess(id) {
             // Time to fetch everything for this process
             axios.get('/api/processes/' + id)
@@ -58,7 +49,27 @@ export default {
                 });
         },
         close() {
-            this.$refs['loaddialog'].close();
+            this.showDialog = false;
+            this.$emit('closed');
+        }
+    },
+    watch: {
+        show: function(val) {
+            this.showDialog = val;
+            if(val == true) {
+                // Then we wanted to load!
+                this.loading = true;
+                this.showDialog = true;
+                // Load processes
+                axios.get('/api/processes')
+                    .then((response) => {
+                        this.processes = response.data.data;
+                        this.loading = false;
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                    });
+            }
         }
     }
 

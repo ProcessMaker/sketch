@@ -13,22 +13,13 @@ window.VueCodeMirror = require('vue-codemirror')
 window.graphlib = require('graphlib');
 window.dagre = require('dagre');
 window.joint = require('jointjs');
-// Bring in our Vue Material package
+
 import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
 
+Vue.use(VueMaterial)
 
-window.Vue.use(window.VueMaterial);
 window.Vue.use(window.VueCodeMirror);
-
-Vue.material.registerTheme('default', {
-    primary: 'blue',
-    accent: {
-        color:  'light-blue',
-        textColor: 'white'
-    },
-    warn: 'red',
-    background: 'white'
-})
 
 // Bring in our custom jointjs shapes
 require('./shapes/init.js');
@@ -53,6 +44,9 @@ const sketch = new Vue({
         menuVisible: false,
         inspectorTitle: '',
         inspectorFormConfig: null,
+        showElementBrowser: false,
+        showInspector: false,
+        showLoadDialog: false,
         inspectorTitleEditing: false,
         inspectorTempTitle: 'test',
         model: {
@@ -83,8 +77,7 @@ const sketch = new Vue({
         },
         // Used when wanting to load an existing process
         load: function() {
-            this.$refs['load-browser'].open();
-
+            this.showLoadDialog = true;
         },
         loadSelect: function(data) {
             this.model = data;
@@ -103,7 +96,7 @@ const sketch = new Vue({
             }
             this.$set(this.model, guid, el);
             // Now make all items that previously connected to the activeElement now connect to this element
-            for(itemId in this.model) {
+            for(let itemId in this.model) {
                 let item = this.model[itemId];
                 let idx = item.connections.indexOf(this.activeElement);
                 if(idx > -1) {
@@ -128,23 +121,21 @@ const sketch = new Vue({
             this.activeElement = null
         },
         handleElementClick: function(id) {
-            element = this.model[id];
+            let element = this.model[id];
             this.activeElement = id;
             if(element.type == 'util.Add') {
-                this.$refs['element-browser'].open();
+                this.showElementBrowser = true;
 
             } else {
                 this.inspectorTitle = element.label ? element.label : element.title;
                 this.inspectorFormConfig = element.formConfig;
-                this.showInspector();
+                this.showInspector = true;
             }
-        },
-        showInspector() {
-            this.$refs.inspector.toggle();
         },
         closeInspector() {
             this.activeElement = null;
-            this.$refs.inspector.close();
+            this.showInspector = false;
+
         }
     },
     mounted() {
