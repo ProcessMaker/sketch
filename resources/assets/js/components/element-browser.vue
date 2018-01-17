@@ -49,6 +49,27 @@
                             }
                         }
                     },
+                    gateways: {
+                        id: "gateways",
+                        title: "Gateways",
+                        icon: "open",
+                        items: {
+                            exclusive: {
+                                id: "exclusive",
+                                title: "Exclusive Gateway",
+                                description: 'Add a branching gateway to the process',
+                                type: 'gateways.Exclusive',
+                                termination: false
+                            },
+                            inclusive: {
+                                id: "inclusive",
+                                title: "Inclusive Gateway",
+                                description: 'Add a merging gateway to the process',
+                                type: 'gateways.Inclusive',
+                                termination: false
+                            },
+                        }
+                    },
                     messaging: {
                         id: 'messaging',
                         title: 'Messaging',
