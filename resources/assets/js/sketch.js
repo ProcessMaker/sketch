@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -33,121 +32,131 @@ Vue.component('load-browser', require('./components/load-browser.vue'));
  * Initialize our Sketch app
  */
 const sketch = new Vue({
-    el: '#sketch',
+  el: '#sketch',
 
-    data: {
-        graphHeight: 0,
-        graphWidth: 0,
-        statusText: '',
-        // Represents the active element that has been clicked
-        activeElement: null,
-        menuVisible: false,
-        inspectorTitle: '',
-        inspectorFormConfig: null,
-        showElementBrowser: false,
-        showInspector: false,
-        showLoadDialog: false,
-        inspectorTitleEditing: false,
-        inspectorTempTitle: 'test',
-        model: {
-            '213aa8fb-15ec-44e7-9727-fd7273d9b109': {
-                title: 'Start Event',
-                name: 'Start from Webhook',
-                type: 'events.Start',
-                connections: [
-                    'e4e51853-a604-4725-a75c-a1ae611a1ca7'
-                ]
-            },
-            'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
-                title: 'Add Element',
-                name: 'Add',
-                type: 'util.Add',
-                connections: []
-            }
-        }
-    },
-    methods: {
-        toggleMenu() {
-            this.menuVisible = !this.menuVisible;
-        },
-        guid() {
-            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        )
-        },
-        // Used when wanting to load an existing process
-        load: function() {
-            this.showLoadDialog = true;
-        },
-        loadSelect: function(data) {
-            this.model = data;
+  data: {
+    graphHeight: 0,
+    graphWidth: 0,
+    statusText: '',
+    // Represents the active element that has been clicked
+    activeElement: null,
+    menuVisible: false,
+    inspectorTitle: '',
+    inspectorFormConfig: null,
+    showElementBrowser: false,
+    showInspector: false,
+    showLoadDialog: false,
+    inspectorTitleEditing: false,
+    inspectorTempTitle: 'test',
+    model: {
+      '213aa8fb-15ec-44e7-9727-fd7273d9b109': {
+        title: 'Start Event',
+        name: 'Start from Webhook',
+        type: 'events.Start',
+        connections: [
+          'e4e51853-a604-4725-a75c-a1ae611a1ca7'
+        ]
+      },
+      'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
+        title: 'Add Element',
+        name: 'Add',
+        type: 'util.Add',
+        connections: []
+      }
 
-        },
-        browserSelect: function(data) {
-            // what we do now is replace the activeElement with a new element
-            let guid = this.guid();
-            let el = {
-                title: data.title,
-                name: data.title,
-                type: data.type,
-                icon: data.icon,
-                connections: [],
-                formConfig: data.formConfig
-            }
-            this.$set(this.model, guid, el);
-            // Now make all items that previously connected to the activeElement now connect to this element
-            for(let itemId in this.model) {
-                let item = this.model[itemId];
-                let idx = item.connections.indexOf(this.activeElement);
-                if(idx > -1) {
-                    item.connections.splice(idx, 1);
-                    item.connections.push(guid);
-                }
-            };
-            // Remove activeElement
-            this.$delete(this.model, this.activeElement);
-            // Now determine if the new element is a termination, if not, add an Add
-            if(!data.termination) {
-                let addGuid = this.guid();
-                let add = {
-                    title: 'Add Element',
-                    name: 'Add',
-                    type: 'util.Add',
-                    connections: []
-                }
-                this.$set(this.model, addGuid, add);
-                el.connections.push(addGuid);
-            }
-            this.activeElement = null
-        },
-        handleElementClick: function(id) {
-            let element = this.model[id];
-            this.activeElement = id;
-            if(element.type == 'util.Add') {
-                this.showElementBrowser = true;
-
-            } else {
-                this.inspectorTitle = element.label ? element.label : element.title;
-                this.inspectorFormConfig = element.formConfig;
-                this.showInspector = true;
-            }
-        },
-        closeInspector() {
-            this.activeElement = null;
-            this.showInspector = false;
-
-        }
-    },
-    mounted() {
-        let toolbar = $('#toolbar-container');
-        this.graphHeight = $(window).height() - toolbar.height();
-        this.graphWidth = $(window).width();
-        $(window).on('resize', (e) => {
-            this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
-            this.graphWidth = $(window).outerWidth();
-        });
     }
+  },
+  methods: {
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    },
+    guid() {
+      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+    },
+    // Used when wanting to load an existing process
+    load: function() {
+      this.showLoadDialog = true;
+    },
+    loadSelect: function(data) {
+      this.model = data;
+
+    },
+    browserSelect: function(data) {
+      // what we do now is replace the activeElement with a new element
+      let guid = this.guid();
+      let el = {
+        title: data.title,
+        name: data.title,
+        type: data.type,
+        icon: data.icon,
+        connections: [],
+        formConfig: data.formConfig
+      }
+      this.$set(this.model, guid, el);
+      // Now make all items that previously connected to the activeElement now connect to this element
+      for (let itemId in this.model) {
+        let item = this.model[itemId];
+        let idx = item.connections.indexOf(this.activeElement);
+        if (idx > -1) {
+          item.connections.splice(idx, 1);
+          item.connections.push(guid);
+        }
+      };
+      // Remove activeElement
+      this.$delete(this.model, this.activeElement);
+      // Now determine if the new element is a termination, if not, add an Add
+
+      if (!data.termination) {
+
+        if (data.type !== 'gateways.Inclusive') {
+
+          let add = {
+            title: 'Add Element',
+            name: 'Add',
+            type: 'util.Add',
+            connections: []
+          }
+
+          let loops = data.type === 'gateways.Exclusive' ? 2 : 1;
+
+          for (let i = 0; i < loops; i++) {
+            let addGuid = this.guid();
+            this.$set(this.model, addGuid, add);
+            el.connections.push(addGuid);
+          }
+
+        }
+
+      }
+      this.activeElement = null
+    },
+    handleElementClick: function(id) {
+      let element = this.model[id];
+      this.activeElement = id;
+      if (element.type == 'util.Add') {
+        this.showElementBrowser = true;
+
+      } else {
+        this.inspectorTitle = element.label ? element.label : element.title;
+        this.inspectorFormConfig = element.formConfig;
+        this.showInspector = true;
+      }
+    },
+    closeInspector() {
+      this.activeElement = null;
+      this.showInspector = false;
+
+    }
+  },
+  mounted() {
+    let toolbar = $('#toolbar-container');
+    this.graphHeight = $(window).height() - toolbar.height();
+    this.graphWidth = $(window).width();
+    $(window).on('resize', (e) => {
+      this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
+      this.graphWidth = $(window).outerWidth();
+    });
+  }
 });
-
-
-

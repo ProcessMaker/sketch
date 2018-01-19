@@ -52,21 +52,20 @@
                     gateways: {
                         id: "gateways",
                         title: "Gateways",
-                        icon: "open",
+                        icon: "build",
                         items: {
                             exclusive: {
                                 id: "exclusive",
                                 title: "Exclusive Gateway",
                                 description: 'Add a branching gateway to the process',
-                                type: 'gateways.Exclusive',
-                                termination: false
+                                type: 'gateways.Exclusive'
+
                             },
                             inclusive: {
                                 id: "inclusive",
                                 title: "Inclusive Gateway",
                                 description: 'Add a merging gateway to the process',
-                                type: 'gateways.Inclusive',
-                                termination: false
+                                type: 'gateways.Inclusive'
                             },
                         }
                     },
