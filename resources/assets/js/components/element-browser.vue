@@ -10,7 +10,7 @@
                     </md-list>
                     <md-list v-if="selected">
                         <div v-for="item in selected.items" :key="item.id">
-                          <div v-if="item.id !== 'mergeexclusive' || item.id === 'mergeexclusive'">
+                          <div v-if="item.id !== 'mergeexclusive' || item.id === 'mergeexclusive' && Object.keys(exclusive).length > 0">
 
                             <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong>: {{item.id}}</h4>
                             <p>
@@ -29,9 +29,11 @@
 </template>
 
 <script>
+
     export default {
         props: [
-            'show'
+            'show',
+            'exclusive'
         ],
 
         data: function() {
@@ -195,6 +197,7 @@
             select(catId, itemId) {
                 this.$emit('select', this.model[catId].items[itemId]);
                 this.close();
+                console.log(this.exclusive);
             }
         },
         watch: {

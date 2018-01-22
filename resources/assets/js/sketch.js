@@ -183,5 +183,6 @@ const sketch = new Vue({
       this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
       this.graphWidth = $(window).outerWidth();
     });
-  }
+  },
+
 });

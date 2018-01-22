@@ -11,7 +11,7 @@
 <body>
 <div id="sketch">
     <load-browser @select="loadSelect" :show="showLoadDialog" @closed="showLoadDialog = false" ref="load-browser"></load-browser>
-    <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" @select="browserSelect"></element-browser>
+    <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" :exclusive="exclusive" @select="browserSelect"></element-browser>
     <md-snackbar v-cloak md-position="center" ref="snackbar">
         <span v-text="statusText"></span>
     </md-snackbar>
