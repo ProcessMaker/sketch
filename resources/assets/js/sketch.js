@@ -62,13 +62,20 @@ const sketch = new Vue({
         name: 'Add',
         type: 'util.Add',
         connections: []
-      }
+      },
 
-    }
+    },
+    exclusive: {}, // will be key of the exclusive gateway and gateway children array
   },
   methods: {
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
+    },
+    getExclusive() {
+      return this.exclusive;
+    },
+    setExclusive(guid) {
+      this.exclusive.push(guid)
     },
     guid() {
       return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -102,61 +109,101 @@ const sketch = new Vue({
         if (idx > -1) {
           item.connections.splice(idx, 1);
           item.connections.push(guid);
+
+          for (let gateway in this.exclusive) {
+
+            console.log('gateway id: '+gateway);
+
+            let index = this.exclusive[gateway].indexOf(this.activeElement);
+
+            console.log(index);
+
+            if (index > -1) {
+
+              console.log('Splice it in...');
+
+              this.exclusive[gateway].splice(index, 1);
+              this.exclusive[gateway].push(guid);
+
+            }
+
+          }
+
+      }
+    };
+    // Remove activeElement
+    this.$delete(this.model, this.activeElement);
+    // Now determine if the new element is a termination, if not, add an Add
+
+    // If the element is in the Exclusive object - update it.
+
+    // if (data.type === 'gateways.Exclusive') {
+    //
+    //   this.$set(this.exclusive, guid,
+    //     children
+    //   );
+    //
+    // }
+
+    if (!data.termination) {
+
+      if (data.type !== 'gateways.Inclusive') {
+
+        let add = {
+          title: 'Add Element',
+          name: 'Add',
+          type: 'util.Add',
+          connections: []
         }
-      };
-      // Remove activeElement
-      this.$delete(this.model, this.activeElement);
-      // Now determine if the new element is a termination, if not, add an Add
 
-      if (!data.termination) {
+        let loops = data.type === 'gateways.Exclusive' ? 2 : 1;
 
-        if (data.type !== 'gateways.Inclusive') {
+        let children = [];
 
-          let add = {
-            title: 'Add Element',
-            name: 'Add',
-            type: 'util.Add',
-            connections: []
-          }
+        for (let i = 0; i < loops; i++) {
+          let addGuid = this.guid();
+          this.$set(this.model, addGuid, add);
+          el.connections.push(addGuid);
+          children.push(addGuid);
 
-          let loops = data.type === 'gateways.Exclusive' ? 2 : 1;
+        }
 
-          for (let i = 0; i < loops; i++) {
-            let addGuid = this.guid();
-            this.$set(this.model, addGuid, add);
-            el.connections.push(addGuid);
-          }
+        if (data.type === 'gateways.Exclusive') {
+
+          this.$set(this.exclusive, guid, children);
 
         }
 
       }
-      this.activeElement = null
-    },
-    handleElementClick: function(id) {
-      let element = this.model[id];
-      this.activeElement = id;
-      if (element.type == 'util.Add') {
-        this.showElementBrowser = true;
-
-      } else {
-        this.inspectorTitle = element.label ? element.label : element.title;
-        this.inspectorFormConfig = element.formConfig;
-        this.showInspector = true;
-      }
-    },
-    closeInspector() {
-      this.activeElement = null;
-      this.showInspector = false;
 
     }
+    this.activeElement = null
   },
-  mounted() {
-    let toolbar = $('#toolbar-container');
-    this.graphHeight = $(window).height() - toolbar.height();
-    this.graphWidth = $(window).width();
-    $(window).on('resize', (e) => {
-      this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
-      this.graphWidth = $(window).outerWidth();
-    });
+  handleElementClick: function(id) {
+    let element = this.model[id];
+    this.activeElement = id;
+    if (element.type == 'util.Add') {
+      this.showElementBrowser = true;
+
+    } else {
+      this.inspectorTitle = element.label ? element.label : element.title;
+      this.inspectorFormConfig = element.formConfig;
+      this.showInspector = true;
+    }
+  },
+  closeInspector() {
+    this.activeElement = null;
+    this.showInspector = false;
+
   }
+},
+mounted() {
+  let toolbar = $('#toolbar-container');
+  this.graphHeight = $(window).height() - toolbar.height();
+  this.graphWidth = $(window).width();
+  $(window).on('resize', (e) => {
+    this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
+    this.graphWidth = $(window).outerWidth();
+  });
+}
 });

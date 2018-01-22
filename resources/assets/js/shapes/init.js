@@ -12,5 +12,5 @@ require('./util/add.js');
 require('./tasks/script.js');
 require('./tasks/service.js');
 require('./gateways/exclusive.js');
+require('./gateways/mergeexclusive.js');
 require('./gateways/inclusive.js');
-

@@ -10,10 +10,14 @@
                     </md-list>
                     <md-list v-if="selected">
                         <div v-for="item in selected.items" :key="item.id">
+                          <div v-if="item.id !== 'mergeexclusive' || item.id === 'mergeexclusive'">
+
                             <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong>: {{item.id}}</h4>
                             <p>
                             {{item.description}}
                             </p>
+
+                          </div>
                         </div>
                     </md-list>
 
@@ -61,12 +65,19 @@
                                 type: 'gateways.Exclusive'
 
                             },
-                            inclusive: {
-                                id: "inclusive",
-                                title: "Inclusive Gateway",
-                                description: 'Add a merging gateway to the process',
-                                type: 'gateways.Inclusive'
+                            mergeexclusive: {
+                                id: "mergeexclusive",
+                                title: "Merge Exclusive Gateway",
+                                description: 'Recombine a branching gateway to the process',
+                                type: 'gateways.MergeExclusive'
+
                             },
+                            // inclusive: {
+                            //     id: "inclusive",
+                            //     title: "Inclusive Gateway",
+                            //     description: 'Add a merging gateway to the process',
+                            //     type: 'gateways.Inclusive'
+                            // },
                         }
                     },
                     messaging: {
