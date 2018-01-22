@@ -71,12 +71,6 @@ const sketch = new Vue({
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },
-    getExclusive() {
-      return this.exclusive;
-    },
-    setExclusive(guid) {
-      this.exclusive.push(guid)
-    },
     guid() {
       return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -112,15 +106,9 @@ const sketch = new Vue({
 
           for (let gateway in this.exclusive) {
 
-            console.log('gateway id: '+gateway);
-
             let index = this.exclusive[gateway].indexOf(this.activeElement);
 
-            console.log(index);
-
             if (index > -1) {
-
-              console.log('Splice it in...');
 
               this.exclusive[gateway].splice(index, 1);
               this.exclusive[gateway].push(guid);
@@ -129,81 +117,71 @@ const sketch = new Vue({
 
           }
 
-      }
-    };
-    // Remove activeElement
-    this.$delete(this.model, this.activeElement);
-    // Now determine if the new element is a termination, if not, add an Add
-
-    // If the element is in the Exclusive object - update it.
-
-    // if (data.type === 'gateways.Exclusive') {
-    //
-    //   this.$set(this.exclusive, guid,
-    //     children
-    //   );
-    //
-    // }
-
-    if (!data.termination) {
-
-      if (data.type !== 'gateways.Inclusive') {
-
-        let add = {
-          title: 'Add Element',
-          name: 'Add',
-          type: 'util.Add',
-          connections: []
         }
+      };
+      // Remove activeElement
+      this.$delete(this.model, this.activeElement);
+      // Now determine if the new element is a termination, if not, add an Add
 
-        let loops = data.type === 'gateways.Exclusive' ? 2 : 1;
+      if (!data.termination) {
 
-        let children = [];
+        if (data.type !== 'gateways.Inclusive') {
 
-        for (let i = 0; i < loops; i++) {
-          let addGuid = this.guid();
-          this.$set(this.model, addGuid, add);
-          el.connections.push(addGuid);
-          children.push(addGuid);
+          let add = {
+            title: 'Add Element',
+            name: 'Add',
+            type: 'util.Add',
+            connections: []
+          }
 
-        }
+          let loops = data.type === 'gateways.Exclusive' ? 2 : 1;
 
-        if (data.type === 'gateways.Exclusive') {
+          let children = [];
 
-          this.$set(this.exclusive, guid, children);
+          for (let i = 0; i < loops; i++) {
+            let addGuid = this.guid();
+            this.$set(this.model, addGuid, add);
+            el.connections.push(addGuid);
+            children.push(addGuid);
+
+          }
+
+          if (data.type === 'gateways.Exclusive') {
+
+            this.$set(this.exclusive, guid, children);
+
+          }
 
         }
 
       }
+      this.activeElement = null
+    },
+    handleElementClick: function(id) {
+      let element = this.model[id];
+      this.activeElement = id;
+      if (element.type == 'util.Add') {
+        this.showElementBrowser = true;
+
+      } else {
+        this.inspectorTitle = element.label ? element.label : element.title;
+        this.inspectorFormConfig = element.formConfig;
+        this.showInspector = true;
+      }
+    },
+    closeInspector() {
+      this.activeElement = null;
+      this.showInspector = false;
 
     }
-    this.activeElement = null
   },
-  handleElementClick: function(id) {
-    let element = this.model[id];
-    this.activeElement = id;
-    if (element.type == 'util.Add') {
-      this.showElementBrowser = true;
-
-    } else {
-      this.inspectorTitle = element.label ? element.label : element.title;
-      this.inspectorFormConfig = element.formConfig;
-      this.showInspector = true;
-    }
-  },
-  closeInspector() {
-    this.activeElement = null;
-    this.showInspector = false;
-
+  mounted() {
+    let toolbar = $('#toolbar-container');
+    this.graphHeight = $(window).height() - toolbar.height();
+    this.graphWidth = $(window).width();
+    $(window).on('resize', (e) => {
+      this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
+      this.graphWidth = $(window).outerWidth();
+    });
   }
-},
-mounted() {
-  let toolbar = $('#toolbar-container');
-  this.graphHeight = $(window).height() - toolbar.height();
-  this.graphWidth = $(window).width();
-  $(window).on('resize', (e) => {
-    this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
-    this.graphWidth = $(window).outerWidth();
-  });
-}
 });
