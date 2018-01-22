@@ -22,6 +22,7 @@ window.Vue.use(window.VueCodeMirror);
 
 // Bring in our custom jointjs shapes
 require('./shapes/init.js');
+require('./api.js');
 
 // Bring in our components
 Vue.component('diagram-view', require('./components/diagram-view.vue'));
