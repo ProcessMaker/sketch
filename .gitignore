@@ -20,3 +20,5 @@ Homestead.json
 .rocketeer/
 
 .idea
+public/js/sketch.js
+public/mix-manifest.json
