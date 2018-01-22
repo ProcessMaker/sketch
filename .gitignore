@@ -22,3 +22,5 @@ Homestead.json
 .idea
 public/js/sketch.js
 public/mix-manifest.json
+public/css/sketch.css
+public/js/sketch.js
