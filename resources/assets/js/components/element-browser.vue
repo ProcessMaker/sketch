@@ -12,7 +12,7 @@
                         <div v-for="item in selected.items" :key="item.id">
                           <div v-if="item.id !== 'mergeexclusive' || item.id === 'mergeexclusive' && Object.keys(exclusive).length > 0">
 
-                            <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong>: {{item.id}}</h4>
+                            <h4 @click="select(selected.id, item.id)" :id="item.id"><strong>{{item.title}}</strong></h4>
                             <p>
                             {{item.description}}
                             </p>
