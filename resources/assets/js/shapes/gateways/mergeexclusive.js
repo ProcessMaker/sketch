@@ -1,4 +1,4 @@
-joint.shapes.pmio.gateways.Inclusive = joint.shapes.basic.Generic.extend({
+joint.shapes.pmio.gateways.MergeExclusive = joint.shapes.basic.Generic.extend({
     markup: '<g class="rotatable"><image class="icon" /><rect class="label" /> <text /></g>',
 
     defaults: joint.util.deepSupplement({

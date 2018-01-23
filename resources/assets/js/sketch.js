@@ -262,16 +262,16 @@ const sketch = new Vue({
 
           });
 
-          let addME = {
-            title: 'Add Element',
-            name: 'Add',
-            type: 'util.Add',
+          let addMe = {
+            title: 'Merge Exclusive',
+            name: 'Merge',
+            type: 'gateways.MergeExclusive',
             connections: []
           }
 
           let addMeGuid = this.guid();
 
-          this.$set(this.model, addMeGuid, addME);
+          this.$set(this.model, addMeGuid, addMe);
 
           el.connections.push(addMeGuid);
 
@@ -282,6 +282,19 @@ const sketch = new Vue({
             this.model[linkedKey].connections = [addMeGuid];
 
           };
+
+          let add2Guid = this.guid();
+
+          this.$set(this.model, add2Guid, {
+            title: 'Add Element',
+            name: 'Add',
+            type: 'util.Add',
+            connections: []
+          });
+
+          el.connections.push(add2Guid);
+
+          this.model[addMeGuid].connections = [add2Guid];
 
         }
 
