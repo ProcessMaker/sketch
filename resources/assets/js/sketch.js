@@ -55,7 +55,8 @@ const sketch = new Vue({
         type: 'events.Start',
         connections: [
           '1fe6d632-2d10-4946-99ed-cdb0a0670b7a'
-        ]
+        ],
+        parent: []
       },
       // 'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
       //   title: 'Add Element',
@@ -66,92 +67,98 @@ const sketch = new Vue({
 
 
       '1fe6d632-2d10-4946-99ed-cdb0a0670b7a': {
-        title:"Exclusive Gateway",
-        name:"Exclusive Gateway",
-        type:"gateways.Exclusive",
-        icon:undefined,
-        connections:["a23a8d95-00a5-4145-bdfc-7b653c906825","2ef1713a-4593-4ce0-aa9b-d0998b0f8de3"],
-        formConfig:undefined
+        title: "Exclusive Gateway",
+        name: "Exclusive Gateway",
+        type: "gateways.Exclusive",
+        icon: undefined,
+        connections: ["a23a8d95-00a5-4145-bdfc-7b653c906825", "2ef1713a-4593-4ce0-aa9b-d0998b0f8de3"],
+        formConfig: undefined,
+        parent: ["013aa8fb-15ec-44e7-9727-fd7273d9b109"]
       },
       '2ef1713a-4593-4ce0-aa9b-d0998b0f8de3': {
-        title:"Send E-Mail",
-        name:"Send E-Mail",
-        type:"tasks.Service",
-        icon:"/icons/mail.png",
-        connections:["bf07434b-b557-4452-a0f6-30be2a757dce"],
-        formConfig:[
-          {
-            type:"help",
-            "text":"The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
+        title: "Send E-Mail",
+        name: "Send E-Mail",
+        type: "tasks.Service",
+        icon: "/icons/mail.png",
+        connections: ["bf07434b-b557-4452-a0f6-30be2a757dce"],
+        formConfig: [{
+            type: "help",
+            "text": "The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
           },
           {
-            type:"text",
-            name:"to","label":"Recipient Email Address"
+            type: "text",
+            name: "to",
+            "label": "Recipient Email Address"
           },
-            {
-              type:"text",
-              name:"name",
-              "label":"Sender Name",
-              "placeholder":"Name the email will appear from"
-            },
-            {
-              type:"text",
-              name:"subject",
-              "label":"Email Subject Line"
-            },
-            {
-              type:"textarea",
-              name:"template",
-              "label":"Message Template"
-            }
-        ]
+          {
+            type: "text",
+            name: "name",
+            "label": "Sender Name",
+            "placeholder": "Name the email will appear from"
+          },
+          {
+            type: "text",
+            name: "subject",
+            "label": "Email Subject Line"
+          },
+          {
+            type: "textarea",
+            name: "template",
+            "label": "Message Template"
+          }
+        ],
+        parent: ["1fe6d632-2d10-4946-99ed-cdb0a0670b7a"]
       },
 
       'a23a8d95-00a5-4145-bdfc-7b653c906825': {
-        title:"Send E-Mail",
-        name:"Send E-Mail",
-        type:"tasks.Service",
-        icon:"/icons/mail.png",
-        connections:["b7080454-5bc6-497d-b5a3-c76dd4606dcc"],
-        formConfig:[
-          {
-            type:"help",
-            "text":"The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
+        title: "Send E-Mail",
+        name: "Send E-Mail",
+        type: "tasks.Service",
+        icon: "/icons/mail.png",
+        connections: ["b7080454-5bc6-497d-b5a3-c76dd4606dcc"],
+        formConfig: [{
+            type: "help",
+            "text": "The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
           },
           {
-            type:"text",
-            name:"to","label":"Recipient Email Address"
+            type: "text",
+            name: "to",
+            "label": "Recipient Email Address"
           },
-            {
-              type:"text",
-              name:"name",
-              "label":"Sender Name",
-              "placeholder":"Name the email will appear from"
-            },
-            {
-              type:"text",
-              name:"subject",
-              "label":"Email Subject Line"
-            },
-            {
-              type:"textarea",
-              name:"template",
-              "label":"Message Template"
-            }
-        ]
+          {
+            type: "text",
+            name: "name",
+            "label": "Sender Name",
+            "placeholder": "Name the email will appear from"
+          },
+          {
+            type: "text",
+            name: "subject",
+            "label": "Email Subject Line"
+          },
+          {
+            type: "textarea",
+            name: "template",
+            "label": "Message Template"
+          }
+        ],
+        parent: ["1fe6d632-2d10-4946-99ed-cdb0a0670b7a"]
       },
       'b7080454-5bc6-497d-b5a3-c76dd4606dcc': {
-        title:"Add Element",
-        name:"Add",
-        type:"util.Add",
-        connections:[]
+        title: "Add Element",
+        name: "Add",
+        type: "util.Add",
+        connections: [],
+        parent: ["a23a8d95-00a5-4145-bdfc-7b653c906825"]
       },
       'bf07434b-b557-4452-a0f6-30be2a757dce': {
-        title:"Add Element",
-        name:"Add",
-        type:"util.Add",
-        connections:[],
-      }
+        title: "Add Element",
+        name: "Add",
+        type: "util.Add",
+        connections: [],
+        parent: ["2ef1713a-4593-4ce0-aa9b-d0998b0f8de3"]
+      },
+
 
     },
     exclusive: {
@@ -163,6 +170,11 @@ const sketch = new Vue({
     }, // will be key of the exclusive gateway and gateway children array
   },
   methods: {
+
+    mergeGateway: function(gateway_id) {
+
+    },
+
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },
@@ -188,15 +200,18 @@ const sketch = new Vue({
         type: data.type,
         icon: data.icon,
         connections: [],
-        formConfig: data.formConfig
+        formConfig: data.formConfig,
+        parent: this.model[this.activeElement].parent
       }
 
-
+      console.log(this.activeElement);
 
       this.$set(this.model, guid, el);
       // Now make all items that previously connected to the activeElement now connect to this element
       for (let itemId in this.model) {
+
         let item = this.model[itemId];
+
         let idx = item.connections.indexOf(this.activeElement);
 
         if (idx > -1) {
@@ -212,6 +227,7 @@ const sketch = new Vue({
             if (index > -1) {
 
               this.exclusive[gateway].splice(index, 1);
+
               this.exclusive[gateway].push(guid);
 
             }
@@ -232,7 +248,8 @@ const sketch = new Vue({
             title: 'Add Element',
             name: 'Add',
             type: 'util.Add',
-            connections: []
+            connections: [],
+            parent: [guid]
           }
 
           let loops = data.type === 'gateways.Exclusive' ? 2 : 1;
@@ -256,11 +273,9 @@ const sketch = new Vue({
         } else {
           // grab the gateway and merge the two open elements
 
-          let linkedElements = $.map(this.exclusive, function(value, index) {
+          // Find the correct gateway by searching the Gateways
 
-            return value;
 
-          });
 
           let addMe = {
             title: 'Merge Exclusive',
@@ -275,7 +290,19 @@ const sketch = new Vue({
 
           el.connections.push(addMeGuid);
 
-          for(let linkedKey of linkedElements) {
+          let linkedElements = $.map(this.exclusive, function(value, index) {
+
+            console.log(index);
+
+            return value;
+
+          });
+
+          console.log(this.exclusive);
+
+          delete this.exclusive[this.exclusive];
+
+          for (let linkedKey of linkedElements) {
 
             this.$delete(this.model, this.model[linkedKey].connections);
 
