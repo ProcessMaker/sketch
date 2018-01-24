@@ -204,8 +204,6 @@ const sketch = new Vue({
         parent: this.model[this.activeElement].parent
       }
 
-      console.log(this.activeElement);
-
       this.$set(this.model, guid, el);
       // Now make all items that previously connected to the activeElement now connect to this element
       for (let itemId in this.model) {
@@ -220,29 +218,34 @@ const sketch = new Vue({
 
           item.connections.push(guid);
 
-          for (let gateway in this.exclusive) {
+        };
 
-            let index = this.exclusive[gateway].indexOf(this.activeElement);
-
-            if (index > -1) {
-
-              this.exclusive[gateway].splice(index, 1);
-
-              this.exclusive[gateway].push(guid);
-
-            }
-
-          }
-
-        }
       };
       // Remove activeElement
+
+      let parent_info = this.model[this.activeElement].parent;
+
       this.$delete(this.model, this.activeElement);
       // Now determine if the new element is a termination, if not, add an Add
 
       if (!data.termination) {
 
         if (data.type !== 'gateways.MergeExclusive') {
+
+          for (let gateway in this.exclusive) {
+
+            for(let index of this.exclusive[gateway]){
+
+              if(index.indexOf(parent_info) > -1){
+
+                this.exclusive[gateway].splice(index, 1);
+
+                this.exclusive[gateway].push(guid);
+
+              }
+            }
+
+          }
 
           let add = {
             title: 'Add Element',
