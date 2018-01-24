@@ -297,6 +297,8 @@ const sketch = new Vue({
 
               this.model[linkedKey].connections = [newMergeExclusiveGuid];
 
+              this.model[newMergeExclusiveGuid].parent = this.exclusive[gateway];
+
             }
 
           }
