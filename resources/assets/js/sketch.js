@@ -276,42 +276,32 @@ const sketch = new Vue({
         } else {
           // grab the gateway and merge the two open elements
 
-          // Find the correct gateway by searching the Gateways
-
-
-
-          let addMe = {
+          let newMergeExclusiveObject = {
             title: 'Merge Exclusive',
             name: 'Merge',
             type: 'gateways.MergeExclusive',
             connections: []
           }
 
-          let addMeGuid = this.guid();
+          let newMergeExclusiveGuid = this.guid();
 
-          this.$set(this.model, addMeGuid, addMe);
+          this.$set(this.model, newMergeExclusiveGuid, newMergeExclusiveObject);
 
-          el.connections.push(addMeGuid);
+          el.connections.push(newMergeExclusiveGuid);
 
-          let linkedElements = $.map(this.exclusive, function(value, index) {
+          for (let gateway in this.exclusive) {
 
-            console.log(index);
+            for(let linkedKey of this.exclusive[gateway]){
 
-            return value;
+              this.$delete(this.model, this.model[linkedKey].connections);
 
-          });
+              this.model[linkedKey].connections = [newMergeExclusiveGuid];
 
-          console.log(this.exclusive);
+            }
 
-          delete this.exclusive[this.exclusive];
+          }
 
-          for (let linkedKey of linkedElements) {
-
-            this.$delete(this.model, this.model[linkedKey].connections);
-
-            this.model[linkedKey].connections = [addMeGuid];
-
-          };
+          this.exclusive = {};
 
           let add2Guid = this.guid();
 
@@ -324,7 +314,7 @@ const sketch = new Vue({
 
           el.connections.push(add2Guid);
 
-          this.model[addMeGuid].connections = [add2Guid];
+          this.model[newMergeExclusiveGuid].connections = [add2Guid];
 
         }
 
