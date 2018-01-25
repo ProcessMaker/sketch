@@ -233,13 +233,9 @@ const sketch = new Vue({
 
             // Delete found elements
 
-            console.log("Key found: "+linkedKey);
-
             this.exclusive[gateway].splice(linkedKey, 1);
 
             // Add new element
-
-            console.log("New Element: "+guid);
 
             this.exclusive[gateway].push(guid);
 
