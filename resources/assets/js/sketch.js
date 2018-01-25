@@ -54,118 +54,119 @@ const sketch = new Vue({
         name: 'Start from Webhook',
         type: 'events.Start',
         connections: [
-          '1fe6d632-2d10-4946-99ed-cdb0a0670b7a'
+          'e4e51853-a604-4725-a75c-a1ae611a1ca7'
         ],
         parent: []
       },
-      // 'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
-      //   title: 'Add Element',
-      //   name: 'Add',
-      //   type: 'util.Add',
-      //   connections: []
+      'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
+        title: 'Add Element',
+        name: 'Add',
+        type: 'util.Add',
+        connections: [],
+        parent: ['013aa8fb-15ec-44e7-9727-fd7273d9b109']
+      },
+
+
+      // '1fe6d632-2d10-4946-99ed-cdb0a0670b7a': {
+      //   title: "Exclusive Gateway",
+      //   name: "Exclusive Gateway",
+      //   type: "gateways.Exclusive",
+      //   icon: undefined,
+      //   connections: ["a23a8d95-00a5-4145-bdfc-7b653c906825", "2ef1713a-4593-4ce0-aa9b-d0998b0f8de3"],
+      //   formConfig: undefined,
+      //   parent: ["013aa8fb-15ec-44e7-9727-fd7273d9b109"]
       // },
-
-
-      '1fe6d632-2d10-4946-99ed-cdb0a0670b7a': {
-        title: "Exclusive Gateway",
-        name: "Exclusive Gateway",
-        type: "gateways.Exclusive",
-        icon: undefined,
-        connections: ["a23a8d95-00a5-4145-bdfc-7b653c906825", "2ef1713a-4593-4ce0-aa9b-d0998b0f8de3"],
-        formConfig: undefined,
-        parent: ["013aa8fb-15ec-44e7-9727-fd7273d9b109"]
-      },
-      '2ef1713a-4593-4ce0-aa9b-d0998b0f8de3': {
-        title: "Send E-Mail",
-        name: "Send E-Mail",
-        type: "tasks.Service",
-        icon: "/icons/mail.png",
-        connections: ["bf07434b-b557-4452-a0f6-30be2a757dce"],
-        formConfig: [{
-            type: "help",
-            "text": "The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
-          },
-          {
-            type: "text",
-            name: "to",
-            "label": "Recipient Email Address"
-          },
-          {
-            type: "text",
-            name: "name",
-            "label": "Sender Name",
-            "placeholder": "Name the email will appear from"
-          },
-          {
-            type: "text",
-            name: "subject",
-            "label": "Email Subject Line"
-          },
-          {
-            type: "textarea",
-            name: "template",
-            "label": "Message Template"
-          }
-        ],
-        parent: ["1fe6d632-2d10-4946-99ed-cdb0a0670b7a"]
-      },
-
-      'a23a8d95-00a5-4145-bdfc-7b653c906825': {
-        title: "Send E-Mail",
-        name: "Send E-Mail",
-        type: "tasks.Service",
-        icon: "/icons/mail.png",
-        connections: ["b7080454-5bc6-497d-b5a3-c76dd4606dcc"],
-        formConfig: [{
-            type: "help",
-            "text": "The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
-          },
-          {
-            type: "text",
-            name: "to",
-            "label": "Recipient Email Address"
-          },
-          {
-            type: "text",
-            name: "name",
-            "label": "Sender Name",
-            "placeholder": "Name the email will appear from"
-          },
-          {
-            type: "text",
-            name: "subject",
-            "label": "Email Subject Line"
-          },
-          {
-            type: "textarea",
-            name: "template",
-            "label": "Message Template"
-          }
-        ],
-        parent: ["1fe6d632-2d10-4946-99ed-cdb0a0670b7a"]
-      },
-      'b7080454-5bc6-497d-b5a3-c76dd4606dcc': {
-        title: "Add Element",
-        name: "Add",
-        type: "util.Add",
-        connections: [],
-        parent: ["a23a8d95-00a5-4145-bdfc-7b653c906825"]
-      },
-      'bf07434b-b557-4452-a0f6-30be2a757dce': {
-        title: "Add Element",
-        name: "Add",
-        type: "util.Add",
-        connections: [],
-        parent: ["2ef1713a-4593-4ce0-aa9b-d0998b0f8de3"]
-      },
+      // '2ef1713a-4593-4ce0-aa9b-d0998b0f8de3': {
+      //   title: "Send E-Mail",
+      //   name: "Send E-Mail",
+      //   type: "tasks.Service",
+      //   icon: "/icons/mail.png",
+      //   connections: ["bf07434b-b557-4452-a0f6-30be2a757dce"],
+      //   formConfig: [{
+      //       type: "help",
+      //       "text": "The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
+      //     },
+      //     {
+      //       type: "text",
+      //       name: "to",
+      //       "label": "Recipient Email Address"
+      //     },
+      //     {
+      //       type: "text",
+      //       name: "name",
+      //       "label": "Sender Name",
+      //       "placeholder": "Name the email will appear from"
+      //     },
+      //     {
+      //       type: "text",
+      //       name: "subject",
+      //       "label": "Email Subject Line"
+      //     },
+      //     {
+      //       type: "textarea",
+      //       name: "template",
+      //       "label": "Message Template"
+      //     }
+      //   ],
+      //   parent: ["1fe6d632-2d10-4946-99ed-cdb0a0670b7a"]
+      // },
+      //
+      // 'a23a8d95-00a5-4145-bdfc-7b653c906825': {
+      //   title: "Send E-Mail",
+      //   name: "Send E-Mail",
+      //   type: "tasks.Service",
+      //   icon: "/icons/mail.png",
+      //   connections: ["b7080454-5bc6-497d-b5a3-c76dd4606dcc"],
+      //   formConfig: [{
+      //       type: "help",
+      //       "text": "The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
+      //     },
+      //     {
+      //       type: "text",
+      //       name: "to",
+      //       "label": "Recipient Email Address"
+      //     },
+      //     {
+      //       type: "text",
+      //       name: "name",
+      //       "label": "Sender Name",
+      //       "placeholder": "Name the email will appear from"
+      //     },
+      //     {
+      //       type: "text",
+      //       name: "subject",
+      //       "label": "Email Subject Line"
+      //     },
+      //     {
+      //       type: "textarea",
+      //       name: "template",
+      //       "label": "Message Template"
+      //     }
+      //   ],
+      //   parent: ["1fe6d632-2d10-4946-99ed-cdb0a0670b7a"]
+      // },
+      // 'b7080454-5bc6-497d-b5a3-c76dd4606dcc': {
+      //   title: "Add Element",
+      //   name: "Add",
+      //   type: "util.Add",
+      //   connections: [],
+      //   parent: ["a23a8d95-00a5-4145-bdfc-7b653c906825"]
+      // },
+      // 'bf07434b-b557-4452-a0f6-30be2a757dce': {
+      //   title: "Add Element",
+      //   name: "Add",
+      //   type: "util.Add",
+      //   connections: [],
+      //   parent: ["2ef1713a-4593-4ce0-aa9b-d0998b0f8de3"]
+      // },
 
 
     },
     exclusive: {
-      '7fe6d632-2d10-4946-99ed-cdb0a0670b7a': [
-        'a23a8d95-00a5-4145-bdfc-7b653c906825',
-        '2ef1713a-4593-4ce0-aa9b-d0998b0f8de3'
-      ]
+      // '7fe6d632-2d10-4946-99ed-cdb0a0670b7a': [
+      //   'a23a8d95-00a5-4145-bdfc-7b653c906825',
+      //   '2ef1713a-4593-4ce0-aa9b-d0998b0f8de3'
+      // ]
 
     }, // will be key of the exclusive gateway and gateway children array
   },
@@ -221,6 +222,33 @@ const sketch = new Vue({
         };
 
       };
+
+      // Search the exclusive objects for this add element and replace it.
+
+      for (let gateway in this.exclusive) {
+
+        for(let linkedKey of this.exclusive[gateway]){
+
+          if(linkedKey === this.activeElement){
+
+            // Delete found elements
+
+            console.log("Key found: "+linkedKey);
+
+            this.exclusive[gateway].splice(linkedKey, 1);
+
+            // Add new element
+
+            console.log("New Element: "+guid);
+
+            this.exclusive[gateway].push(guid);
+
+          }
+
+        }
+
+      }
+
       // Remove activeElement
 
       let parent_info = this.model[this.activeElement].parent;
