@@ -172,10 +172,6 @@ const sketch = new Vue({
   },
   methods: {
 
-    mergeGateway: function(gateway_id) {
-
-    },
-
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },
@@ -223,28 +219,6 @@ const sketch = new Vue({
 
       };
 
-      // Search the exclusive objects for this add element and replace it.
-
-      for (let gateway in this.exclusive) {
-
-        for(let linkedKey of this.exclusive[gateway]){
-
-          if(linkedKey === this.activeElement){
-
-            // Delete found elements
-
-            this.exclusive[gateway].splice(linkedKey, 1);
-
-            // Add new element
-
-            this.exclusive[gateway].push(guid);
-
-          }
-
-        }
-
-      }
-
       // Remove activeElement
 
       let parent_info = this.model[this.activeElement].parent;
@@ -255,21 +229,6 @@ const sketch = new Vue({
       if (!data.termination) {
 
         if (data.type !== 'gateways.MergeExclusive') {
-
-          for (let gateway in this.exclusive) {
-
-            for(let index of this.exclusive[gateway]){
-
-              if(index.indexOf(parent_info) > -1){
-
-                this.exclusive[gateway].splice(index, 1);
-
-                this.exclusive[gateway].push(guid);
-
-              }
-            }
-
-          }
 
           let add = {
             title: 'Add Element',
@@ -284,6 +243,7 @@ const sketch = new Vue({
           let children = [];
 
           for (let i = 0; i < loops; i++) {
+
             let addGuid = this.guid();
             this.$set(this.model, addGuid, add);
             el.connections.push(addGuid);
@@ -291,14 +251,70 @@ const sketch = new Vue({
 
           }
 
-          if (data.type === 'gateways.Exclusive') {
+          if (children.length > 1) {
 
             this.$set(this.exclusive, guid, children);
 
           }
 
+          // Search the exclusive objects for this add element and replace it.
+
+          if (this.exclusive) {
+
+            let i = 0
+            let changeElements = {};
+
+            for (let gateway in this.exclusive) {
+
+              if (this.exclusive[gateway].includes(this.activeElement)) {
+
+                if (this.model[guid].type !== 'events.End') {
+
+                  changeElements[i++] = {
+                    action: 'add',
+                    gateway: gateway,
+                    uuid: guid
+                  }
+
+                }
+
+                changeElements[i++] = {
+                  action: 'delete',
+                  gateway: gateway,
+                  uuid: this.activeElement
+                }
+
+              }
+
+            }
+
+            for (let change in changeElements) {
+
+              if (changeElements[change].action === 'add') {
+
+                this.exclusive[changeElements[change].gateway].push(changeElements[change].uuid)
+
+              }
+
+              if (changeElements[change].action === 'delete') {
+
+                this.exclusive[changeElements[change].gateway].splice(changeElements[change].uuid, 1)
+
+              }
+
+              if (this.exclusive[changeElements[change].gateway].length === 1) {
+
+                this.$delete(this.exclusive, changeElements[change].gateway)
+
+              }
+
+            }
+
+            changeElements = {}
+
+          }
+
         } else {
-          // grab the gateway and merge the two open elements
 
           let newMergeExclusiveObject = {
             title: 'Merge Exclusive',
@@ -315,7 +331,23 @@ const sketch = new Vue({
 
           for (let gateway in this.exclusive) {
 
-            for(let linkedKey of this.exclusive[gateway]){
+            for (let linkedKey of this.exclusive[gateway]) {
+
+              // TODO: Need to join other open elements into the merge. Maybe use a click event with different colored add elements?
+
+              // if (this.model[linkedKey].type && this.model[linkedKey].type === 'gateways.Exclusive') {
+              //
+              //   // there is another gateway in play
+              //
+              //   let otherchildren = this.exclusive[linkedKey];
+              //
+              //   // remove the gateway from the options
+              //
+              //   otherchildren.splice(linkedKey, 1);
+              //
+              //   console.log(otherchildren);
+              //
+              // }
 
               this.$delete(this.model, this.model[linkedKey].connections);
 
@@ -347,6 +379,7 @@ const sketch = new Vue({
       }
 
       this.activeElement = null
+
     },
     handleElementClick: function(id) {
       let element = this.model[id];

@@ -198,7 +198,7 @@ export default {
     select(catId, itemId) {
       this.$emit('select', this.model[catId].items[itemId]);
       this.close();
-      console.log(this.exclusive);
+      // console.log(this.exclusive);
     }
   },
   watch: {
