@@ -48,23 +48,20 @@ const sketch = new Vue({
     showLoadDialog: false,
     inspectorTitleEditing: false,
     inspectorTempTitle: 'test',
+    processInfo: {},
+    pmio_url: 'https://0lqmxthf.api.processmaker.io/api/v1/',
+    pmio_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjEwODFiOGI1NDA4NDg2OWY1ZWVmMzQ0MGI3NzZlOGMzNDZjNTA2MDVlMzIzNTNjMTM1MzYxNDZlMjAxNTUzMDhjNDQ0NmVmNmU5YjllMDhkIn0.eyJhdWQiOiI0NjkzMzkxNyIsImp0aSI6IjEwODFiOGI1NDA4NDg2OWY1ZWVmMzQ0MGI3NzZlOGMzNDZjNTA2MDVlMzIzNTNjMTM1MzYxNDZlMjAxNTUzMDhjNDQ0NmVmNmU5YjllMDhkIiwiaWF0IjoxNTE2MDUwMjI1LCJuYmYiOjE1MTYwNTAyMjUsImV4cCI6MTU0NzU4NjIyNSwic3ViIjoiMSIsInNjb3BlcyI6W119.hRzABPhxCA5AezaLvsZV2xggPu7lpxekDhM1fb7IjmMtFM3ruKjCoCrGgUk3qGv7WOLR84pdoSf2XVFaZ2-5sxJr6cvAyx_rv3zT3A7hxpjzBhyr7xRd4u7lUAM677slW1A4IP1dbgdPrn_B8AjH73j6gZDVnq6R1mHLpwbSeBU84w5jKgtGF1Rh6CvnNQNcqHD0ZTLackTDYXdIRV4MZIuI76cAsLBoRYNHSv5OJILU_TSlQEKzf9GeZm_kq710ocHH2rxLjTYM799zbkWPLzK99uwVQ-uvz3EwnLiaQSeVhk31TxY24Vjh5oye6jCaDA7IvPxqa-ubr7dOA9ZyXFrep0ktPum-5Ym9E4XY9LFKOIj3o0BmGuBEH0x1IvRmiFEufPS0NxgZUizUuFM7tp2DyQIgCNxE7fpgulhEktzB20O0MZ2ij7H-qtKZ_DGK8JUN2o4tGWHo86D9zUh9A1fSSdHWu-RXxylwqlVK4JEiZO5FVb8QlP1M1qZWwxKPGM1asuUxXRQknUSZGTxtolpRiRcbmaOVGHH6NkeXN33lZkxQp690NwSyVyBjsVVb2RMneiOY7fB_bugjqrSDcKyPf4et3_5Pm6ND-5dsQ2Yl97T817HA7dNR-pmP5v7X6pQxC_d__H8J5JJ3LGpAmmCJn-k1MmPcPc-B8jIVr-w',
+    pmio_process_id: 'ebd2e112-04ed-42d7-86bd-c4324debc898',
+    pageTitle: 'Loading...',
     model: {
       '013aa8fb-15ec-44e7-9727-fd7273d9b109': {
         title: 'Start Event',
         name: 'Start from Webhook',
         type: 'events.Start',
-        connections: [
-          'e4e51853-a604-4725-a75c-a1ae611a1ca7'
-        ],
-        parent: []
-      },
-      'e4e51853-a604-4725-a75c-a1ae611a1ca7': {
-        title: 'Add Element',
-        name: 'Add',
-        type: 'util.Add',
         connections: [],
-        parent: ['013aa8fb-15ec-44e7-9727-fd7273d9b109']
-      },
+        parent: []
+      }
+
 
 
       // '1fe6d632-2d10-4946-99ed-cdb0a0670b7a': {
@@ -171,6 +168,99 @@ const sketch = new Vue({
     }, // will be key of the exclusive gateway and gateway children array
   },
   methods: {
+
+    pmioLoad(){
+
+      axios.get(
+          this.pmio_url+'processes/'+this.pmio_process_id,
+          {headers: {
+              "Authorization" : `Bearer ${this.pmio_token}`
+            }
+          }
+        )
+        .then((response) => {
+            this.pageTitle = response.data.data.attributes.name;
+            // console.log(response.data.data);
+            this.processInfo = response.data.data;
+
+            this.pmioTasks(response.data.data.id)
+
+          },
+          (error) => {
+            this.processInfo = error.response.status;
+          }
+        );
+
+    },
+
+    pmioTasks(id){
+
+      axios.get(
+          this.pmio_url+'processes/'+id+'/tasks',
+          {headers: {
+              "Authorization" : `Bearer ${this.pmio_token}`
+            }
+          }
+        )
+        .then((response) => {
+
+          let tasks = response.data.data;
+
+          if(tasks.length > 0){
+
+            let startEl = this.model['013aa8fb-15ec-44e7-9727-fd7273d9b109'];
+
+            startEl.connections.length = 0;
+
+            startEl.connections.push(tasks[0].id);
+
+            let i = -1;
+
+            for(let task in tasks){
+
+              let add = {
+                title: tasks[task].attributes.name,
+                name: tasks[task].attributes.name,
+                type: "tasks.Script",
+                connections: [],
+                parent: ['013aa8fb-15ec-44e7-9727-fd7273d9b109'] // Start
+              }
+
+              if(tasks[i + 2]){
+                add.connections = [tasks[i + 2].id]
+              } else {
+                add.connections = ['e4e51853-a604-4725-a75c-a1ae611a1ca7'];
+              }
+
+              // update the model
+
+              this.$set(this.model, tasks[task].id, add);
+
+              i++;
+
+            };
+
+            let add = {
+              title: 'Add Element',
+              name: 'Add',
+              type: 'util.Add',
+              connections: [],
+              parent: [tasks[i].id]
+            };
+
+            this.$set(this.model,'e4e51853-a604-4725-a75c-a1ae611a1ca7', add);
+
+          }
+
+          // return response.data.data;
+            // return response.data.data;
+          },
+          (error) => {
+            return error.response.status;
+          }
+        );
+
+    },
 
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
@@ -401,12 +491,18 @@ const sketch = new Vue({
   },
   mounted() {
     let toolbar = $('#toolbar-container');
+
     this.graphHeight = $(window).height() - toolbar.height();
     this.graphWidth = $(window).width();
     $(window).on('resize', (e) => {
       this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
       this.graphWidth = $(window).outerWidth();
     });
+
   },
+  beforeMount() {
+    //do something before mounting vue instance
+    this.pmioLoad();
+  }
 
 });

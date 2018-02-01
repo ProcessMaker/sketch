@@ -18,6 +18,7 @@
     <md-drawer id="inspector" :md-active.sync="showInspector" v-cloak class="md-right" ref="inspector" class="md-elevation-2">
             <md-toolbar>
                 <div class="md-toolbar-container">
+
                         <h3 class="md-title" v-if="activeElement">
                             @{{model[activeElement].title}}
                         </h3>
@@ -58,7 +59,7 @@
             <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
                 <md-icon>menu</md-icon>
             </md-button>
-            <h1 class="md-title" style="flex: 1">ProcessMaker Sketch</h1>
+            <h1 class="md-title" style="flex: 1">@{{pageTitle}}</h1>
             <md-button @click="load">Load Existing</md-button>
         </md-toolbar>
     </div>
