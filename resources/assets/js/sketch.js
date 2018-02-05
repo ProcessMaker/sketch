@@ -52,18 +52,33 @@ const sketch = new Vue({
     pmio_url: 'https://0lqmxthf.api.processmaker.io/api/v1/',
     pmio_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjEwODFiOGI1NDA4NDg2OWY1ZWVmMzQ0MGI3NzZlOGMzNDZjNTA2MDVlMzIzNTNjMTM1MzYxNDZlMjAxNTUzMDhjNDQ0NmVmNmU5YjllMDhkIn0.eyJhdWQiOiI0NjkzMzkxNyIsImp0aSI6IjEwODFiOGI1NDA4NDg2OWY1ZWVmMzQ0MGI3NzZlOGMzNDZjNTA2MDVlMzIzNTNjMTM1MzYxNDZlMjAxNTUzMDhjNDQ0NmVmNmU5YjllMDhkIiwiaWF0IjoxNTE2MDUwMjI1LCJuYmYiOjE1MTYwNTAyMjUsImV4cCI6MTU0NzU4NjIyNSwic3ViIjoiMSIsInNjb3BlcyI6W119.hRzABPhxCA5AezaLvsZV2xggPu7lpxekDhM1fb7IjmMtFM3ruKjCoCrGgUk3qGv7WOLR84pdoSf2XVFaZ2-5sxJr6cvAyx_rv3zT3A7hxpjzBhyr7xRd4u7lUAM677slW1A4IP1dbgdPrn_B8AjH73j6gZDVnq6R1mHLpwbSeBU84w5jKgtGF1Rh6CvnNQNcqHD0ZTLackTDYXdIRV4MZIuI76cAsLBoRYNHSv5OJILU_TSlQEKzf9GeZm_kq710ocHH2rxLjTYM799zbkWPLzK99uwVQ-uvz3EwnLiaQSeVhk31TxY24Vjh5oye6jCaDA7IvPxqa-ubr7dOA9ZyXFrep0ktPum-5Ym9E4XY9LFKOIj3o0BmGuBEH0x1IvRmiFEufPS0NxgZUizUuFM7tp2DyQIgCNxE7fpgulhEktzB20O0MZ2ij7H-qtKZ_DGK8JUN2o4tGWHo86D9zUh9A1fSSdHWu-RXxylwqlVK4JEiZO5FVb8QlP1M1qZWwxKPGM1asuUxXRQknUSZGTxtolpRiRcbmaOVGHH6NkeXN33lZkxQp690NwSyVyBjsVVb2RMneiOY7fB_bugjqrSDcKyPf4et3_5Pm6ND-5dsQ2Yl97T817HA7dNR-pmP5v7X6pQxC_d__H8J5JJ3LGpAmmCJn-k1MmPcPc-B8jIVr-w',
     pmio_process_id: 'ebd2e112-04ed-42d7-86bd-c4324debc898',
+    // TODO: Mappings
     pmio_elements: {
-      'SERVICE-TASK': 'tasks.Service',
-      'SCRIPT-TASK': 'tasks.Script',
+      'SERVICE-TASK': {
+        map: 'tasks.Service',
+        template: 'messaging.items.sendmail',
+        category: 'messaging',
+        item: 'sendmail',
+        icon: '/icons/mail.png',
+        name: 'sendmail'
+      },
+      'SCRIPT-TASK': {
+        map: 'tasks.Script',
+        template: 'scripting.items.nodejs',
+        category: 'scripting',
+        item: 'nodejs',
+        icon: '/icons/script.png',
+        name: 'nodejs'
+      }
     },
-      // 'util.Basic':'',
-      // 'util.Add':'',
-      // 'tasks.Service':'SERVICE-TASK',
-      // 'tasks.Script':'SCRIPT-TASK',
-      // 'gateways.MergeExclusive':'',
-      // 'gateways.Exclusive':'',
-      // 'events.Start':'',
-      // 'events.End':'',
+    // 'util.Basic':'',
+    // 'util.Add':'',
+    // 'tasks.Service':'SERVICE-TASK',
+    // 'tasks.Script':'SCRIPT-TASK',
+    // 'gateways.MergeExclusive':'',
+    // 'gateways.Exclusive':'',
+    // 'events.Start':'',
+    // 'events.End':'',
     // ],
     pageTitle: 'Loading...',
     model: {
@@ -172,6 +187,7 @@ const sketch = new Vue({
 
 
     },
+    tasks: [],
     exclusive: {
       // '7fe6d632-2d10-4946-99ed-cdb0a0670b7a': [
       //   'a23a8d95-00a5-4145-bdfc-7b653c906825',
@@ -179,21 +195,159 @@ const sketch = new Vue({
       // ]
 
     }, // will be key of the exclusive gateway and gateway children array
+    // TODO: Templates
+    templates: {
+      process: {
+        id: "process",
+        title: "Process",
+        icon: "build",
+        items: {
+          end: {
+            id: "end",
+            title: "End Event",
+            description: 'Denotes the completion of the process',
+            type: 'events.End',
+            termination: true
+          }
+        }
+      },
+      gateways: {
+        id: "gateways",
+        title: "Gateways",
+        icon: "build",
+        items: {
+          exclusive: {
+            id: "exclusive",
+            title: "Exclusive Gateway",
+            description: 'Add a branching gateway to the process',
+            type: 'gateways.Exclusive'
+
+          },
+          mergeexclusive: {
+            id: "mergeexclusive",
+            title: "Merge Exclusive Gateway",
+            description: 'Recombine a branching gateway to the process',
+            type: 'gateways.MergeExclusive'
+
+          },
+          // inclusive: {
+          //     id: "inclusive",
+          //     title: "Inclusive Gateway",
+          //     description: 'Add a merging gateway to the process',
+          //     type: 'gateways.Inclusive'
+          // },
+        }
+      },
+      messaging: {
+        id: 'messaging',
+        title: 'Messaging',
+        icon: 'chat',
+        items: {
+          sendmail: {
+            id: 'sendmail',
+            title: 'Send E-Mail',
+            connector_class: 'SendMailConnector',
+            icon: '/icons/mail.png',
+            description: 'Send an e-mail to a specified recipient and with content',
+            type: 'tasks.Service',
+            formConfig: [{
+                type: 'help',
+                text: 'The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces.'
+              },
+              {
+                type: 'text',
+                name: 'to',
+                label: 'Recipient Email Address',
+              },
+              {
+                type: 'text',
+                name: 'name',
+                label: 'Sender Name',
+                placeholder: 'Name the email will appear from'
+              },
+              {
+                type: 'text',
+                name: 'subject',
+                label: 'Email Subject Line'
+              },
+              {
+                type: 'textarea',
+                name: 'template',
+                label: 'Message Template'
+              }
+            ]
+          }
+        }
+      },
+      scripting: {
+        id: 'scripting',
+        title: "Scripting",
+        icon: "code",
+        items: {
+          lua: {
+            id: "lua",
+            title: "LUA Script",
+            type: 'tasks.Script',
+            description: 'Execute a provided LUA script',
+            formConfig: [{
+                type: 'help',
+                text: 'The LUA Script Task provides the ability to execute a LUA script inside your process.'
+              },
+              {
+                type: 'script',
+                label: 'LUA Script',
+                value: '',
+                options: {
+                  tabSize: 4,
+                  mode: 'text/x-lua',
+                  theme: 'base16-dark',
+                  lineNumbers: true,
+                  line: true
+                }
+              }
+            ]
+          },
+          nodejs: {
+            id: "nodejs",
+            title: "Node.JS Script",
+            type: 'tasks.Script',
+            description: "Execute a provided Node.JS Script",
+            formConfig: [{
+                type: 'help',
+                text: 'The Node.JS Script Task provides the ability to execute a Node.JS script inside your process.'
+              },
+              {
+                type: 'script',
+                label: 'Node.JS Script',
+                value: '',
+                options: {
+                  tabSize: 4,
+                  mode: 'text/javascript',
+                  theme: 'base16-dark',
+                  lineNumbers: true,
+                  line: true
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
   },
   methods: {
 
-    pmioLoad(){
+    pmioLoad() {
 
       axios.get(
-          this.pmio_url+'processes/'+this.pmio_process_id,
-          {headers: {
-              "Authorization" : `Bearer ${this.pmio_token}`
+          this.pmio_url + 'processes/' + this.pmio_process_id, {
+            headers: {
+              "Authorization": `Bearer ${this.pmio_token}`
             }
           }
         )
         .then((response) => {
             this.pageTitle = response.data.data.attributes.name;
-            // console.log(response.data.data);
+
             this.processInfo = response.data.data;
 
             this.pmioTasks(response.data.data.id)
@@ -205,71 +359,156 @@ const sketch = new Vue({
         );
 
     },
+    // TODO: Import Task Connectors from API
+    pimoTaskConnectors(process_id, task_id) {
+      axios.get(
+          this.pmio_url + 'processes/' + process_id + '/tasks/' + task_id + '/connectors', {
+            headers: {
+              "Authorization": `Bearer ${this.pmio_token}`
+            }
+          }
+        )
+        .then((response) => {
+            if(response.data.data[0]){
 
-    pmioTasks(id){
+              let params = response.data.data[0]['attributes']['input_parameters'];
+
+              let form = [];
+
+              for(let param in params){
+
+                let set_type = 'text';
+
+                if(params[param].length > 96){
+                  set_type = 'textarea';
+                }
+
+                form.push({
+                  type: set_type,
+                  label: param,
+                  name: param,
+                  value: params[param],
+                });
+
+              }
+
+              console.log(form);
+
+              this.model[task_id].formConfig = form;
+
+
+              this.tasks.push(response.data.data[0]);
+            }
+
+            // console.log('Get Connectors');
+            // console.log(response.data.data);
+          },
+          (error) => {
+            console.log('Error:');
+            console.log(error.response.status);
+          }
+        );
+
+    },
+
+    pmioTasks(id) {
 
       axios.get(
-          this.pmio_url+'processes/'+id+'/tasks',
-          {headers: {
-              "Authorization" : `Bearer ${this.pmio_token}`
+          this.pmio_url + 'processes/' + id + '/tasks', {
+            headers: {
+              "Authorization": `Bearer ${this.pmio_token}`
             }
           }
         )
         .then((response) => {
 
-          let tasks = response.data.data;
+            let tasks = response.data.data;
 
-          if(tasks.length > 0){
+            if (tasks.length > 0) {
 
-            let startEl = this.model['013aa8fb-15ec-44e7-9727-fd7273d9b109'];
+              let startEl = this.model['013aa8fb-15ec-44e7-9727-fd7273d9b109'];
 
-            startEl.connections.length = 0;
+              startEl.connections.length = 0;
 
-            startEl.connections.push(tasks[0].id);
+              startEl.connections.push(tasks[0].id);
 
-            let i = -1;
+              let i = -1;
 
-            console.log(tasks);
+              for (let task in tasks) {
 
-            for(let task in tasks){
+                // TODO: Import Tasks from API
 
-              let type_key = this.pmio_elements[tasks[task].attributes.type]
+                this.pimoTaskConnectors(id, tasks[task].id);
+
+                let mapping = this.pmio_elements[tasks[task].attributes.type]
+
+                let type_template = this.pmio_elements[tasks[task].attributes.type].template
+
+                let template = this.templates[mapping.category]['items'][mapping.item];
+
+                let add = {
+                  title: tasks[task].attributes.name,
+                  name: tasks[task].attributes.name,
+                  type: mapping.map,
+                  icon: mapping.icon,
+                  connections: [],
+                  parent: ['013aa8fb-15ec-44e7-9727-fd7273d9b109'] // Start
+                }
+
+
+                if(this.tasks[task] !== undefined){
+
+                  add.formConfig = this.tasks[task][attributes][input_parameters];
+
+                }
+
+                if (mapping.map === 'tasks.Script') {
+                  add.formConfig = [{
+                      type: 'help',
+                      text: 'The Node.JS Script Task provides the ability to execute a Node.JS script inside your process.'
+                    },
+                    {
+                      type: 'script',
+                      label: 'Node.JS Script',
+                      value: tasks[task].attributes.script,
+                      options: {
+                        tabSize: 4,
+                        mode: 'text/javascript',
+                        theme: 'base16-dark',
+                        lineNumbers: true,
+                        line: true
+                      }
+                    }
+                  ]
+                }
+
+                if (tasks[i + 2]) {
+                  add.connections = [tasks[i + 2].id]
+                } else {
+                  add.connections = ['e4e51853-a604-4725-a75c-a1ae611a1ca7'];
+                }
+
+                // update the model
+
+                this.$set(this.model, tasks[task].id, add);
+
+                i++;
+
+              };
 
               let add = {
-                title: tasks[task].attributes.name,
-                name: tasks[task].attributes.name,
-                type: type_key,
+                title: 'Add Element',
+                name: 'Add',
+                type: 'util.Add',
                 connections: [],
-                parent: ['013aa8fb-15ec-44e7-9727-fd7273d9b109'] // Start
-              }
+                parent: [tasks[i].id]
+              };
 
-              if(tasks[i + 2]){
-                add.connections = [tasks[i + 2].id]
-              } else {
-                add.connections = ['e4e51853-a604-4725-a75c-a1ae611a1ca7'];
-              }
+              this.$set(this.model, 'e4e51853-a604-4725-a75c-a1ae611a1ca7', add);
 
-              // update the model
+            }
 
-              this.$set(this.model, tasks[task].id, add);
-
-              i++;
-
-            };
-
-            let add = {
-              title: 'Add Element',
-              name: 'Add',
-              type: 'util.Add',
-              connections: [],
-              parent: [tasks[i].id]
-            };
-
-            this.$set(this.model,'e4e51853-a604-4725-a75c-a1ae611a1ca7', add);
-
-          }
-
-          // return response.data.data;
+            // return response.data.data;
             // return response.data.data;
           },
           (error) => {
@@ -290,6 +529,9 @@ const sketch = new Vue({
     // Used when wanting to load an existing process
     load: function() {
       this.showLoadDialog = true;
+    },
+    save: function() {
+      console.log('WTF');
     },
     loadSelect: function(data) {
       this.model = data;

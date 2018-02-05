@@ -61,6 +61,7 @@
             </md-button>
             <h1 class="md-title" style="flex: 1">@{{pageTitle}}</h1>
             <md-button @click="load">Load Existing</md-button>
+            <md-button @click="save">Save Process</md-button>
         </md-toolbar>
     </div>
     <div id="diagram-container" v-cloak v-bind:style="{width: graphWidth + 'px', height: graphHeight + 'px'}">

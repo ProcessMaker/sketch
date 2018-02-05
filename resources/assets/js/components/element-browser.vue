@@ -184,6 +184,7 @@ export default {
     }
   },
   methods: {
+
     selectCategory(catId) {
       this.selected = this.model[catId];
     },

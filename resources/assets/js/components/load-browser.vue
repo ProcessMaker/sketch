@@ -1,6 +1,6 @@
 <template>
     <md-dialog :md-active.sync="showDialog" md-open-from="#custom" md-close-to="#custom" ref="loaddialog">
-        <md-dialog-title>Load Existing Process</md-dialog-title>
+        <md-dialog-title>Load Existing Processes</md-dialog-title>
 
         <md-dialog-content>
             <h2 v-if="loading">Fetching Processes....</h2>
