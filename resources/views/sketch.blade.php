@@ -56,9 +56,10 @@
     </md-drawer>
     <div id="toolbar-container" class="md-elevation-2">
         <md-toolbar v-cloak>
-            <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+            {{-- <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
                 <md-icon>menu</md-icon>
-            </md-button>
+            </md-button> --}}
+            <img src="/images/processmaker-logo.png" class="img-response" style="max-width:48px">
             <h1 class="md-title" style="flex: 1">@{{pageTitle}}</h1>
             <md-button @click="load">Load Existing</md-button>
             <md-button @click="save">Save Process</md-button>
