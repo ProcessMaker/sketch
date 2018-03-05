@@ -11,13 +11,14 @@
 <body>
 <div id="sketch">
     <load-browser @select="loadSelect" :show="showLoadDialog" @closed="showLoadDialog = false" ref="load-browser"></load-browser>
-    <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" @select="browserSelect"></element-browser>
+    <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" :exclusive="exclusive" @select="browserSelect"></element-browser>
     <md-snackbar v-cloak md-position="center" ref="snackbar">
         <span v-text="statusText"></span>
     </md-snackbar>
     <md-drawer id="inspector" :md-active.sync="showInspector" v-cloak class="md-right" ref="inspector" class="md-elevation-2">
             <md-toolbar>
                 <div class="md-toolbar-container">
+
                         <h3 class="md-title" v-if="activeElement">
                             @{{model[activeElement].title}}
                         </h3>
@@ -55,11 +56,13 @@
     </md-drawer>
     <div id="toolbar-container" class="md-elevation-2">
         <md-toolbar v-cloak>
-            <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+            {{-- <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
                 <md-icon>menu</md-icon>
-            </md-button>
-            <h1 class="md-title" style="flex: 1">ProcessMaker Sketch</h1>
+            </md-button> --}}
+            <img src="/images/processmaker-logo.png" class="img-response" style="max-width:48px">
+            <h1 class="md-title" style="flex: 1">@{{pageTitle}}</h1>
             <md-button @click="load">Load Existing</md-button>
+            <md-button @click="save">Save Process</md-button>
         </md-toolbar>
     </div>
     <div id="diagram-container" v-cloak v-bind:style="{width: graphWidth + 'px', height: graphHeight + 'px'}">

@@ -19,11 +19,12 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
-    "PMIO": "github:processmaker/pmio-sdk-javascript",
     "dagre": "^0.7.4",
     "graphlib": "^2.1.1",
     "jointjs": "^1.1.0",
+    "npm-watch": "^0.3.0",
+    "sweetalert": "^2.1.0",
     "vue-codemirror": "^3.1.8",
-    "vue-material": "^1.0.0-beta-4"
+    "vue-material": "^1.0.0-beta-7"
   }
 }
