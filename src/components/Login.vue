@@ -1,35 +1,35 @@
 <template>
-<div class="card" style="width: 24rem; margin: 0 auto">
-  <div class="card-header">
+  <div class="card" style="width: 24rem; margin: 0 auto">
+    <div class="card-header">
       <strong>ProcessMaker.io Login</strong>
     </div>
-  <div class="card-body">
-    <p>Please enter your details from your processmaker.io environment.</p>
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" v-model="credentials.username" placeholder="Username">
+    <div class="card-body">
+      <p>Please enter your details from your processmaker.io environment.</p>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" v-model="credentials.username" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" v-model="credentials.password" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="client_id">Client Id</label>
+        <input type="text" class="form-control" id="client_id" v-model="credentials.client_id" placeholder="Client Id">
+      </div>
+      <div class="form-group">
+        <label for="client_secret">Client Secret</label>
+        <input type="password" class="form-control" id="client_secret" v-model="credentials.client_secret" placeholder="Client Secret">
+      </div>
+      <div class="form-group">
+        <label for="api_url">API URL</label>
+        <input type="text" class="form-control" id="api_url" v-model="credentials.api_url" placeholder="API URL">
+      </div>
+    </div>
+    <div class="card-footer text-right">
+      <button @click="submit()" class="btn btn-primary btn-sm">Sign In</button>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" v-model="credentials.password" placeholder="Password">
-  </div>
-  <div class="form-group">
-    <label for="client_id">Client Id</label>
-    <input type="text" class="form-control" id="client_id" v-model="credentials.client_id" placeholder="Client Id">
-  </div>
-  <div class="form-group">
-    <label for="client_secret">Client Secret</label>
-    <input type="password" class="form-control" id="client_secret" v-model="credentials.client_secret" placeholder="Client Secret">
-  </div>
-  <div class="form-group">
-    <label for="api_url">API URL</label>
-    <input type="text" class="form-control" id="api_url" v-model="credentials.api_url" placeholder="API URL">
-  </div>
-</div>
-<div class="card-footer text-right">
-<button @click="submit()" class="btn btn-primary btn-sm">Sign In</button>
-</div>
-</div>
 </template>
 <script>
 import axios from 'axios'
@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    submit () {
+    submit() {
       axios
         .post(this.credentials.api_url + '/oauth/access_token', {
           username: this.credentials.username,

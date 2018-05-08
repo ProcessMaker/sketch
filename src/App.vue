@@ -2,9 +2,9 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">
-      <img src="./assets/logo.png" width="30" height="30" alt="">
-    </a>
-    <div class="collapse navbar-collapse" id="navbarNav">
+        <img src="./assets/logo.png" width="30" height="30" alt="">
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link :to="{ name: 'Login', class: 'nav-link' }" class="nav-link">Home</router-link>
@@ -14,8 +14,8 @@
           </li>
         </ul>
       </div>
-  </nav>
-  <br>
+    </nav>
+    <br>
     <router-view/>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -37,6 +37,5 @@ export default {
 .router-link-exact-active {
   font-weight: 900;
   text-decoration: underline !important;
-};
-
+}
 </style>

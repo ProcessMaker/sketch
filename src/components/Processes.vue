@@ -1,12 +1,12 @@
 <template>
-    <div class="container">
-        <h1>Process List</h1>
-        <ul>
-            <li v-for="process in processes" :key="process.id">
-                <router-link :to="{ name: 'Process', query: { id: process.id }}">{{ process.attributes.name }}</router-link>
-                </li>
-        </ul>
-    </div>
+  <div class="container">
+    <h1>Process List</h1>
+    <ul>
+      <li v-for="process in processes" :key="process.id">
+        <router-link :to="{ name: 'Process', query: { id: process.id }}">{{ process.attributes.name }}</router-link>
+      </li>
+    </ul>
+  </div>
 </template>
 <script>
 import axios from 'axios'

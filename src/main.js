@@ -10,14 +10,21 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(Vuex)
 
+window.axios = require('axios')
+window.graphlib = require('graphlib')
+window.dagre = require('dagre')
+window.joint = require('jointjs')
+
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
 let bus = new Vue({
   data: {
     credentials: {
       username: 'admin',
-      client_id: '',
-      client_secret: '',
-      api_url: 'https://ENVKEY.api.processmaker.io',
-      password: '',
+      client_id: '53718138',
+      client_secret: 'IoLsrgbbe7W2H4A8N9MiMR0XhAMCAL6fTOLZk8Jn',
+      api_url: 'https://barcrafd.api.processmaker.io',
+      password: 'cO7946LP',
       access_token: ''
     }
   }
@@ -29,9 +36,9 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  components: { App },
   data: {
     credentials: bus.credentials
   },
-  components: { App },
   template: '<App />'
 })

@@ -1,11 +1,17 @@
 <template>
-<div class='container'>
-  <h1>Process {{ name }}</h1>
-</div>
+  <div class="container">
+    <h1>Process {{ name }}</h1>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
+
+require('../shapes/init.js')
+
+Vue.component('diagram-view', require('./diagram-view.vue'))
+Vue.component('element-browser', require('./element-browser.vue'))
+Vue.component('load-browser', require('./load-browser.vue'))
 
 export default {
   data () {
