@@ -1,3 +1,5 @@
+import PlusImage from '../../icons/plus.png'
+
 joint.shapes.pmio.util.Add = joint.shapes.basic.Generic.extend({
     markup: '<image class="icon" />',
 
@@ -9,7 +11,7 @@ joint.shapes.pmio.util.Add = joint.shapes.basic.Generic.extend({
         },
         attrs: {
             'image.icon': {
-                'xlink:href': '/icons/plus.png',
+                'xlink:href': PlusImage,
                 width: 64,
                 height: 64
             }

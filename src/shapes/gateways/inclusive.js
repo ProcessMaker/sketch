@@ -1,3 +1,5 @@
+import MergeImage from '../../icons/merge.png';
+
 joint.shapes.pmio.gateways.Inclusive = joint.shapes.basic.Generic.extend({
     markup: '<g class="rotatable"><image class="icon" /><rect class="label" /> <text /></g>',
 
@@ -9,7 +11,7 @@ joint.shapes.pmio.gateways.Inclusive = joint.shapes.basic.Generic.extend({
         },
         attrs: {
             'image.icon': {
-                'xlink:href': '/icons/merge.png',
+                'xlink:href': MergeImage,
                 width: 64,
                 height: 64
             },

@@ -1,3 +1,5 @@
+import StartImage from '../../icons/start.png';
+
 joint.shapes.pmio.events.Start = joint.shapes.basic.Generic.extend({
     markup: '<g class="rotatable"><image class="icon" /><rect class="label" /> <text /></g>',
 
@@ -9,7 +11,7 @@ joint.shapes.pmio.events.Start = joint.shapes.basic.Generic.extend({
         },
         attrs: {
             'image.icon': {
-                'xlink:href': '/icons/start.png',
+                'xlink:href': StartImage,
                 width: 64,
                 height: 64
             },

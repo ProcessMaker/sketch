@@ -1,3 +1,5 @@
+import ScriptImage from '../../icons/script.png';
+
 joint.shapes.pmio.tasks.Script = joint.shapes.basic.Generic.extend({
     markup: '<g class="rotatable"><image class="icon" /><rect class="label" /> <text /></g>',
 
@@ -9,7 +11,7 @@ joint.shapes.pmio.tasks.Script = joint.shapes.basic.Generic.extend({
         },
         attrs: {
             'image.icon': {
-                'xlink:href': '/icons/script.png',
+                'xlink:href': ScriptImage,
                 width: 64,
                 height: 64
             },
