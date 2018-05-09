@@ -9,21 +9,22 @@ require('./bootstrap');
 
 import Vue from 'vue'
 
-window.Vue = Vue;
 window.VueCodeMirror = require('vue-codemirror')
 
 window.graphlib = require('graphlib');
 window.dagre = require('dagre');
 window.joint = require('jointjs');
 
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.min.css'
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(BootstrapVue);
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import './sass/sketch.scss'
 
-Vue.use(VueMaterial)
-
-window.Vue.use(window.VueCodeMirror);
+Vue.use(window.VueCodeMirror);
 
 // Bring in our custom jointjs shapes
 require('./shapes/init.js');

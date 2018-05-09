@@ -1,27 +1,25 @@
 <template>
-    <md-dialog :md-active.sync="showDialog" ref="elementsdialog">
-        <md-dialog-title>Browse Elements</md-dialog-title>
+    <b-modal id="elementsdialog" title="Browse Elements" ref="elementsdialog">
+        <b-list-group>
+            <b-list-group-item @click="selected = model[item.id]" v-for="item in model" :key="item.id">
+                <b-img :src="item.icon" />
+                <span>{{item.title}}</span>
+            </b-list-group-item>
+        </b-list-group>
+        <b-list-group v-if="selected">
+            <b-list-group-item v-for="item in selected.items" :key="item.id">
+                <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong>: {{item.id}}</h4>
+                <p>
+                {{item.description}}
+                </p>
+            </b-list-group-item>
+        </b-list-group>
 
-                    <md-list>
-                        <md-list-item @click="selected = model[item.id]" v-for="item in model" :key="item.id">
-                            <md-icon>{{item.icon}}</md-icon>
-                            <span>{{item.title}}</span>
-                        </md-list-item>
-                    </md-list>
-                    <md-list v-if="selected">
-                        <div v-for="item in selected.items" :key="item.id">
-                            <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong>: {{item.id}}</h4>
-                            <p>
-                            {{item.description}}
-                            </p>
-                        </div>
-                    </md-list>
-
-        <md-dialog-actions>
-            <md-button class="md-primary" @click="close()">Cancel</md-button>
-            <md-button class="md-primary" @click="close()">Ok</md-button>
-        </md-dialog-actions>
-    </md-dialog>
+        <template slot="modal-footer">
+            <b-button @click="close()">Cancel</b-button>
+            <b-button @click="close()">Ok</b-button>
+        </template>
+    </b-modal>
 </template>
 
 <script>

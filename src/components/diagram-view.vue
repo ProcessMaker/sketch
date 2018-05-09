@@ -1,5 +1,5 @@
 <template>
-    <div class="diagram-view">
+    <div class="diagram-view h-100">
 
     </div>
 </template>

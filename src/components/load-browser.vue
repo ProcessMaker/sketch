@@ -1,22 +1,18 @@
 <template>
-    <md-dialog :md-active.sync="showDialog" md-open-from="#custom" md-close-to="#custom" ref="loaddialog">
-        <md-dialog-title>Load Existing Process</md-dialog-title>
+    <b-modal id="loaddialog" title="Load Existing Process" ref="loaddialog">
 
-        <md-dialog-content>
-            <h2 v-if="loading">Fetching Processes....</h2>
-            <md-list v-else>
-                <md-list-item v-for="process in processes" :key="process.id">
-                    <a href="#" @click="loadProcess(process.id)">{{process.attributes.name}}</a>
-                </md-list-item>
-            </md-list>
+        <h2 v-if="loading">Fetching Processes....</h2>
+        <b-list-group v-else>
+            <b-list-group-item v-for="process in processes" :key="process.id">
+                <a href="#" @click="loadProcess(process.id)">{{process.attributes.name}}</a>
+            </b-list-group-item>
+        </b-list-group>
 
 
-        </md-dialog-content>
-
-        <md-dialog-actions>
-            <md-button class="md-primary" @click="close()">Cancel</md-button>
-        </md-dialog-actions>
-    </md-dialog>
+        <template slot="modal-footer">
+            <b-button @click="close()">Cancel</b-button>
+        </template>
+    </b-modal>
 </template>
 
 <script>

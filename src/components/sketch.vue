@@ -1,61 +1,65 @@
 <template>
-    <div>
+    <div class="sketch">
+      <b-navbar type="dark" fixed="top" variant="dark">
+         <b-navbar-brand href="#">ProcessMaker Sketch</b-navbar-brand>
+      </b-navbar>
+
         <load-browser @select="loadSelect" :show="showLoadDialog" @closed="showLoadDialog = false" ref="load-browser"></load-browser>
         <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" @select="browserSelect"></element-browser>
-        <md-snackbar v-cloak md-position="center" ref="snackbar">
+        <b-alert v-cloak ref="alertbar">
             <span v-text="statusText"></span>
-        </md-snackbar>
-        <md-drawer id="inspector" :md-active.sync="showInspector" v-cloak class="md-right md-elevation-2" ref="inspector">
-            <md-toolbar>
-                <div class="md-toolbar-container">
-                    <h3 class="md-title" v-if="activeElement">
-                        @{{model[activeElement].title}}
-                    </h3>
-                    <h3 class="md-title" v-else>
-                        @{{ inspectorTitle }}
-                    </h3>
-                </div>
+        </b-alert>
 
-            </md-toolbar>
-
-            <div id="inspector-body" v-if="activeElement">
-                <md-field>
-                    <label>Name</label>
-                    <md-input v-model="model[activeElement].name" v-bind:placeholder="model[activeElement].title"></md-input>
-                </md-field>
-                <div v-for="item in model[activeElement].formConfig">
-                    <p v-if="item.type == 'help'" v-text="item.text"></p>
-                    <md-field v-else-if="item.type == 'text'">
-                        <label v-text="item.label"></label>
-                        <md-input v-model="item.value" v-bind:placeholder="item.placeholder"></md-input>
-                    </md-field>
-                    <md-field v-else-if="item.type =='textarea'">
-                        <label v-text="item.label"></label>
-                        <md-textarea v-model="item.value" v-bind:placeholder="item.placeholder"></md-textarea>
-                    </md-field>
-                    <div v-else-if="item.type == 'script'">
-                        <label v-text="item.label"></label>
-                        <codemirror v-model="item.value" :options="item.options"></codemirror>
+        <b-container fluid class="h-100">
+          <b-row class="h-100" no-gutters>
+            <b-col class="h-100">
+              <div id="diagram-container" class="h-100" v-cloak>
+                  <diagram-view @element-click="handleElementClick" :model="model"></diagram-view>
+              </div>
+            </b-col>
+            <b-col v-cloack id="inspector" v-if="showInspector" ref="inspector">
+                <md-toolbar>
+                    <div class="md-toolbar-container">
+                        <h3 class="md-title" v-if="activeElement">
+                            @{{model[activeElement].title}}
+                        </h3>
+                        <h3 class="md-title" v-else>
+                            @{{ inspectorTitle }}
+                        </h3>
                     </div>
+
+                </md-toolbar>
+
+                <div id="inspector-body" v-if="activeElement">
+                    <md-field>
+                        <label>Name</label>
+                        <md-input v-model="model[activeElement].name" v-bind:placeholder="model[activeElement].title"></md-input>
+                    </md-field>
+                    <div v-for="item in model[activeElement].formConfig">
+                        <p v-if="item.type == 'help'" v-text="item.text"></p>
+                        <md-field v-else-if="item.type == 'text'">
+                            <label v-text="item.label"></label>
+                            <md-input v-model="item.value" v-bind:placeholder="item.placeholder"></md-input>
+                        </md-field>
+                        <md-field v-else-if="item.type =='textarea'">
+                            <label v-text="item.label"></label>
+                            <md-textarea v-model="item.value" v-bind:placeholder="item.placeholder"></md-textarea>
+                        </md-field>
+                        <div v-else-if="item.type == 'script'">
+                            <label v-text="item.label"></label>
+                            <codemirror v-model="item.value" :options="item.options"></codemirror>
+                        </div>
+                    </div>
+
+                    <md-button class="md-raised md-accent" @click="closeInspector">Close</md-button>
                 </div>
 
-                <md-button class="md-raised md-accent" @click="closeInspector">Close</md-button>
-            </div>
+            </b-col>
+ 
+          </b-row>
+        </b-container>
 
-        </md-drawer>
-        <div id="toolbar-container" class="md-elevation-2">
-            <md-toolbar v-cloak>
-                <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
-                    <md-icon>menu</md-icon>
-                </md-button>
-                <h1 class="md-title" style="flex: 1">ProcessMaker Sketch</h1>
-                <md-button @click="load">Load Existing</md-button>
-            </md-toolbar>
-        </div>
-        <div id="diagram-container" v-cloak v-bind:style="{width: graphWidth + 'px', height: graphHeight + 'px'}">
-            <diagram-view @element-click="handleElementClick" :width="graphWidth" :model="model" :height="graphHeight"></diagram-view>
-        </div>
-    </div>
+   </div>
 
 </template>
 
@@ -173,20 +177,15 @@ export default {
       this.activeElement = null;
       this.showInspector = false;
     }
-  },
-  mounted() {
-    let toolbar = $("#toolbar-container");
-    this.graphHeight = $(window).height() - toolbar.height();
-    this.graphWidth = $(window).width();
-    $(window).on("resize", e => {
-      this.graphHeight = $(window).outerHeight() - toolbar.outerHeight();
-      this.graphWidth = $(window).outerWidth();
-    });
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
+.sketch {
+  flex-grow: 1;
+
+}
 
 </style>
 
