@@ -1,23 +1,15 @@
 <template>
     <div class="sketch">
-      <b-navbar type="dark" fixed="top" variant="dark">
+      <b-navbar type="dark" variant="dark">
          <b-navbar-brand href="#">ProcessMaker Sketch</b-navbar-brand>
       </b-navbar>
 
-        <load-browser @select="loadSelect" :show="showLoadDialog" @closed="showLoadDialog = false" ref="load-browser"></load-browser>
-        <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" @select="browserSelect"></element-browser>
-        <b-alert v-cloak ref="alertbar">
-            <span v-text="statusText"></span>
-        </b-alert>
-
-        <b-container fluid class="h-100">
-          <b-row class="h-100" no-gutters>
-            <b-col class="h-100">
-              <div id="diagram-container" class="h-100" v-cloak>
-                  <diagram-view @element-click="handleElementClick" :model="model"></diagram-view>
+        <div class="sketch-subcontainer">
+              <div class="diagram-container" v-cloak>
+                  <diagram-view @selected="nodeSelect" :model="model"></diagram-view>
               </div>
-            </b-col>
-            <b-col v-cloack id="inspector" v-if="showInspector" ref="inspector">
+              <div v-cloack class="inspector" v-if="showInspector" ref="inspector">
+                test
                 <md-toolbar>
                     <div class="md-toolbar-container">
                         <h3 class="md-title" v-if="activeElement">
@@ -30,7 +22,7 @@
 
                 </md-toolbar>
 
-                <div id="inspector-body" v-if="activeElement">
+                <div class="inspector-body" v-if="activeElement">
                     <md-field>
                         <label>Name</label>
                         <md-input v-model="model[activeElement].name" v-bind:placeholder="model[activeElement].title"></md-input>
@@ -54,10 +46,16 @@
                     <md-button class="md-raised md-accent" @click="closeInspector">Close</md-button>
                 </div>
 
-            </b-col>
+            </div>
  
-          </b-row>
-        </b-container>
+        <load-browser @select="loadSelect" :show="showLoadDialog" @closed="showLoadDialog = false" ref="load-browser"></load-browser>
+        <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" @select="browserSelect"></element-browser>
+        <b-alert v-cloak ref="alertbar">
+            <span v-text="statusText"></span>
+        </b-alert>
+
+
+        </div>
 
    </div>
 
@@ -91,22 +89,73 @@ export default {
       inspectorTitleEditing: false,
       inspectorTempTitle: "test",
       model: {
-        "213aa8fb-15ec-44e7-9727-fd7273d9b109": {
-          title: "Start Event",
-          name: "Start from Webhook",
-          type: "events.Start",
-          connections: ["e4e51853-a604-4725-a75c-a1ae611a1ca7"]
+        id: "213aa8fb-15ec-44e7-9727-fd7273d9b109",
+        type: "start",
+        selected: false,
+        config: {
+          title: "Start From Webhook",
+          description: "Start Event"
         },
-        "e4e51853-a604-4725-a75c-a1ae611a1ca7": {
-          title: "Add Element",
-          name: "Add",
-          type: "util.Add",
-          connections: []
-        }
+        children: [
+          {
+            id: "test-two",
+            type: "start",
+            selected: false,
+            config: {
+              title: "2nd start",
+              description: "Start Event"
+            },
+            children: [
+              {
+                id: "test-four",
+                type: "start",
+                selected: false,
+                config: {
+                  title: "4th start",
+                  description: "Start Event"
+                },
+                children: []
+              },
+              {
+                id: "test-five",
+                type: "start",
+                selected: false,
+                config: {
+                  title: "5th start",
+                  description: "Start Event"
+                },
+                children: []
+              }
+            ]
+          },
+          {
+            id: "test-three",
+            type: "start",
+            selected: false,
+            config: {
+              title: "3rd start",
+              description: "Start Event"
+            },
+            children: []
+          }
+        ]
       }
     };
   },
   methods: {
+    resetSelected(item) {
+      if (item.children.length) {
+        for (let count in item.children) {
+          this.resetSelected(item.children[count]);
+        }
+      }
+      item.selected = false;
+    },
+    nodeSelect(item) {
+      // Go through all items in our model and recursively set selected to false
+      this.resetSelected(this.model);
+      item.selected = true;
+    },
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },
@@ -178,15 +227,32 @@ export default {
       this.showInspector = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .sketch {
-  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: column;
 
+  .sketch-subcontainer {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+
+    .diagram-container {
+      flex-grow: 1;
+    }
+
+    .inspector {
+      width: 360px;
+      background-color: darkgrey;
+    }
+  }
 }
-
 </style>
 
 

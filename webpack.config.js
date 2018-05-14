@@ -1,5 +1,6 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
     },
     module: {
         rules: [
+            // Vue loader
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
@@ -41,7 +43,14 @@ module.exports = {
     },
     plugins: [
         // make sure to include the plugin!
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new CopyWebpackPlugin([
+            {
+                from: 'src/icons/**/*',
+                to: 'icons/',
+                flatten: true
+            }
+         ])
     ],
     resolve: {
         alias: {

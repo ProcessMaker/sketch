@@ -1,15 +1,6 @@
-
-// Include JointJS CSS
-@import "~jointjs/dist/joint.css";
-
 [v-cloak] {
   display: none;
 }
-
-svg:not(.md-image) {
-  height: 100%;
-}
-
 
 #inspector-body {
   padding: 16px;
