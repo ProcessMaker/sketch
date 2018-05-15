@@ -49,7 +49,6 @@
             </div>
  
         <load-browser @select="loadSelect" :show="showLoadDialog" @closed="showLoadDialog = false" ref="load-browser"></load-browser>
-        <element-browser ref="element-browser" @closed="showElementBrowser = false" :show="showElementBrowser" @select="browserSelect"></element-browser>
         <b-alert v-cloak ref="alertbar">
             <span v-text="statusText"></span>
         </b-alert>
@@ -89,58 +88,11 @@ export default {
       inspectorTitleEditing: false,
       inspectorTempTitle: "test",
       model: {
-        id: "213aa8fb-15ec-44e7-9727-fd7273d9b109",
-        type: "start",
+        type: "add",
         selected: false,
-        config: {
-          title: "Start From Webhook",
-          description: "Start Event"
-        },
-        children: [
-          {
-            id: "test-two",
-            type: "start",
-            selected: false,
-            config: {
-              title: "2nd start",
-              description: "Start Event"
-            },
-            children: [
-              {
-                id: "test-four",
-                type: "start",
-                selected: false,
-                config: {
-                  title: "4th start",
-                  description: "Start Event"
-                },
-                children: []
-              },
-              {
-                id: "test-five",
-                type: "start",
-                selected: false,
-                config: {
-                  title: "5th start",
-                  description: "Start Event"
-                },
-                children: []
-              }
-            ]
-          },
-          {
-            id: "test-three",
-            type: "start",
-            selected: false,
-            config: {
-              title: "3rd start",
-              description: "Start Event"
-            },
-            children: []
-          }
-        ]
+        children: []
       }
-    };
+    }
   },
   methods: {
     resetSelected(item) {

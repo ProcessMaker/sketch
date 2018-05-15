@@ -1,32 +1,11 @@
-<template>
-    <b-modal id="elementsdialog" title="Browse Elements" ref="elementsdialog">
-        <b-list-group>
-            <b-list-group-item @click="selected = model[item.id]" v-for="item in model" :key="item.id">
-                <b-img :src="item.icon" />
-                <span>{{item.title}}</span>
-            </b-list-group-item>
-        </b-list-group>
-        <b-list-group v-if="selected">
-            <b-list-group-item v-for="item in selected.items" :key="item.id">
-                <h4 @click="select(selected.id, item.id)"><strong>{{item.title}}</strong>: {{item.id}}</h4>
-                <p>
-                {{item.description}}
-                </p>
-            </b-list-group-item>
-        </b-list-group>
-
-        <template slot="modal-footer">
-            <b-button @click="close()">Cancel</b-button>
-            <b-button @click="close()">Ok</b-button>
-        </template>
-    </b-modal>
-</template>
-
 <script>
     export default {
         props: [
             'show'
         ],
+        watch: {
+
+        },
 
         data: function() {
             return {

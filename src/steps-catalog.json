@@ -1,0 +1,169 @@
+[
+  {
+    "id": "workflow",
+    "title": "Workflow",
+    "items": [
+      {
+        "id": "end",
+        "title": "End Event",
+        "icon": "/sketch/icons/stop.png",
+        "description": "Denotes the completion of the process",
+        "type": "end",
+        "termination": true
+      }
+    ]
+  },
+  {
+    "id": "connectors",
+    "title": "Connectors",
+    "icon": "connectors",
+    "items": [
+      {
+        "id": "dropbox",
+        "title": "Dropbox: Save File",
+        "description": "Save a file into Dropbox",
+        "icon": "/sketch/icons/dropbox.png"
+      },
+      {
+        "id": "facebook",
+        "title": "Facebook: Post Update",
+        "description": "Post an Update to a Profile or Page",
+        "icon": "/sketch/icons/facebook.png"
+      },
+       {
+        "id": "facebook",
+        "title": "Facebook: Post Gallery",
+        "description": "Post a collection of photos as a new gallery",
+        "icon": "/sketch/icons/facebook.png"
+      },
+       {
+        "id": "google-calendar",
+        "title": "Google Calendar: New Event",
+        "description": "Create a new event in a specified calendar",
+        "icon": "/sketch/icons/google_calendar.png"
+      },
+        {
+        "id": "google-calendar",
+        "title": "Google Calendar: Update Event",
+        "description": "Update an event in a specified calendar",
+        "icon": "/sketch/icons/google_calendar.png"
+      },
+        {
+        "id": "google-drive",
+        "title": "Google Drive: Save File",
+        "description": "Save a file to a directory in your drive",
+        "icon": "/sketch/icons/google_drive.png"
+      },
+ 
+      {
+        "id": "gmail",
+        "title": "Gmail: Send E-Mail",
+        "connector_class": "SendMailConnector",
+        "icon": "/sketch/icons/gmail.png",
+        "description": "Use Google Mail to Send a new Email",
+        "type": "connector",
+        "formConfig": [
+          {
+            "type": "help",
+            "text": "The SendMailConnector sends mail to a target email address. The subject and message template uses data model replacements, specifying what to insert into the message with curly braces."
+          },
+          {
+            "type": "text",
+            "name": "to",
+            "label": "Recipient Email Address"
+          },
+          {
+            "type": "text",
+            "name": "name",
+            "label": "Sender Name",
+            "placeholder": "Name the email will appear from"
+          },
+          {
+            "type": "text",
+            "name": "subject",
+            "label": "Email Subject Line"
+          },
+          {
+            "type": "textarea",
+            "name": "template",
+            "label": "Message Template"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "scripting",
+    "title": "Scripting",
+    "items": [
+      {
+        "id": "lua",
+        "title": "LUA Script",
+        "icon": "/sketch/icons/script.png",
+        "type": "tasks.Script",
+        "description": "Execute a provided LUA script",
+        "formConfig": [
+          {
+            "type": "help",
+            "text": "The LUA Script Task provides the ability to execute a LUA script inside your process."
+          },
+          {
+            "type": "script",
+            "label": "LUA Script",
+            "value": "",
+            "options": {
+              "tabSize": 4,
+              "mode": "text/x-lua",
+              "theme": "base16-dark",
+              "lineNumbers": true,
+              "line": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "nodejs",
+        "title": "Node.JS Script",
+        "icon": "/sketch/icons/script.png",
+        "type": "tasks.Script",
+        "description": "Execute a provided Node.JS Script",
+        "formConfig": [
+          {
+            "type": "help",
+            "text": "The Node.JS Script Task provides the ability to execute a Node.JS script inside your process."
+          },
+          {
+            "type": "script",
+            "label": "Node.JS Script",
+            "value": "",
+            "options": {
+              "tabSize": 4,
+              "mode": "text/javascript",
+              "theme": "base16-dark",
+              "lineNumbers": true,
+              "line": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "actions",
+    "title": "Actions",
+    "items": [
+      {
+        "id": "actions-approve-by-slack",
+        "icon": "/sketch/icons/slack.png",
+        "title": "Approve Request By Slack",
+        "description": "A bundled approval process that works through Slack"
+      },
+      {
+        "id": "actions-approve-by-email",
+        "icon": "/sketch/icons/mail.png",
+        "title": "Approve Request By Email",
+        "description": "A bundled approval process sends approval requests by Email with actionable links"
+      }
+    ]
+  }
+]

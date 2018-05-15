@@ -1,6 +1,6 @@
 <template>
     <div class="diagram-view">
-        <node @selected="selectHandler" v-if="model" :item="model" :children="model.children" />
+        <node class="step" @selected="selectHandler" v-if="model" :item="model" :children="model.children" />
    </div>
 
 </template>

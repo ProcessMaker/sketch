@@ -2,7 +2,7 @@
     <div class="node">
         <div class="element">
             <div @click="select(item)" class="step" :class="{selected: item.selected}">
-            <component :is="item.type" :config="item.config" />
+            <component :is="item.type" :selected="item.selected" :config="item.config" />
             </div>
        </div>
         <div class="children">
@@ -24,17 +24,15 @@ import { faArrowDown } from "@fortawesome/fontawesome-free-solid";
 
 // Bring in our components
 import start from "./steps/start.vue";
+import add from "./steps/add.vue";
 
 export default {
   name: "node",
   components: {
-    start
+    start,
+    add
   },
   props: ["item", "children"],
-  components: {
-    FontAwesomeIcon,
-    start
-  },
   data() {
     return {
       downIcon: faArrowDown
@@ -53,9 +51,11 @@ export default {
   display: inline-block;
   margin-left: 8px;
   margin-right: 8px;
+  text-align: left;
 
   .step {
     display: inline-block;
+    cursor: default;
     &.selected {
       outline: solid;
       outline-width: 2px;
