@@ -13,7 +13,7 @@
     "css-loader": "^0.28.11",
     "express": "^4.16.3",
     "file-loader": "^1.1.11",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.23",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
@@ -29,9 +29,9 @@
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "PMIO": "github:processmaker/pmio-sdk-javascript",
     "bootstrap-vue": "^2.0.0-rc.9",
-    "dagre": "^0.7.4",
+    "dagre": "^0.8.5",
     "graphlib": "^2.1.5",
-    "jointjs": "^1.1.0",
+    "jointjs": "^3.7.7",
     "vue-codemirror": "^3.1.8"
   }
 }
